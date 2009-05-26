@@ -81,7 +81,7 @@
 										<reference key="NSSuperview" ref="596637209"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">3</int>
-											<bytes key="NSWhite">MQA</bytes>
+											<bytes key="NSWhite">MSAwAA</bytes>
 											<reference key="NSCustomColorSpace" ref="287727180"/>
 										</object>
 										<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -333,7 +333,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 						</object>
 					</object>
-					<string>{{859, 480}, {320, 480}}</string>
+					<string>{{859, 580}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>Overlapping_ViewsAppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

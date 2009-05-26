@@ -14,4 +14,6 @@
 
 }
 
+-(CGPathRef) componentDrawingPath;
+
 @end

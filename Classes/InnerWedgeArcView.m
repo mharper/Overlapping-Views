@@ -8,6 +8,8 @@
 
 #import "InnerWedgeArcView.h"
 
+#import <math.h>
+
 
 @implementation InnerWedgeArcView
 
@@ -21,9 +23,37 @@
 
 
 - (void)drawRect:(CGRect)rect {
-    // Drawing code
+  
+  // Save the current context.
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSaveGState(context);
+  
+  // Draw the component path.
+  CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+  CGContextSetFillColorWithColor(context, [UIColor greenColor].CGColor);
+  CGContextAddPath(context, [self componentDrawingPath]);
+  CGContextFillPath(context);
+  CGContextAddPath(context, [self componentDrawingPath]);
+  CGContextStrokePath(context);
+  
+  // Restore the context.
+  CGContextRestoreGState(context);
 }
 
+-(CGPathRef) componentDrawingPath
+{
+  CGFloat wedgeRadius = 30.0;
+  static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
+
+  CGMutablePathRef drawingPath = CGPathCreateMutable();
+  CGAffineTransform offsetVertically = CGAffineTransformMakeTranslation(0.0, 25.0);
+  CGPathMoveToPoint(drawingPath, &offsetVertically, 0.0, 0.0);
+  CGPathAddLineToPoint(drawingPath, &offsetVertically, wedgeRadius * cos(WEDGE_ANGLE / 2.0), -(wedgeRadius * sin(WEDGE_ANGLE / 2.0)));
+  CGPathAddArcToPoint(drawingPath, &offsetVertically, wedgeRadius / cos(WEDGE_ANGLE / 2.0), 0.0, wedgeRadius * cos(WEDGE_ANGLE / 2.0), wedgeRadius * sin(WEDGE_ANGLE / 2.0), wedgeRadius);
+  CGPathAddLineToPoint(drawingPath, &offsetVertically, 0.0, 0.0);
+  
+  return drawingPath;
+}
 
 - (void)dealloc {
     [super dealloc];
