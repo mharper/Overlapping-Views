@@ -106,6 +106,13 @@
       }
     }
   }
+  
+  // Moved outside of all interested views.
+  else
+  {
+    [selectedComponentView stopTrackingTouches];
+    self.selectedComponentView = nil;
+  }
 }
 
 -(void) touchesEnded:(NSSet *) touches withEvent:(UIEvent *) event
@@ -113,6 +120,7 @@
   if (selectedComponentView != nil)
   {
     [selectedComponentView stopTrackingTouches];
+    self.selectedComponentView = nil;
   }
 }
 
@@ -121,6 +129,7 @@
   if (selectedComponentView != nil)
   {
     [selectedComponentView stopTrackingTouches];
+    self.selectedComponentView = nil;
   }
 }
 

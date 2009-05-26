@@ -40,7 +40,6 @@
 
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event
 {
-  NSLog(@"trackTouches for view tag %d.\n", self.tag);
   if (!magnified)
   {
     [self magnify];
@@ -63,7 +62,6 @@
 	[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
 	self.transform = magnifyBounceTransform;
 	[UIView commitAnimations];
-  // self.frame = magnifiedViewFrame;
   self.magnified = YES;
 }
 
@@ -80,7 +78,6 @@
 	[UIView setAnimationDuration:0.15];
 	self.transform = normalTransform;	
 	[UIView commitAnimations];
-  // self.frame = originalViewFrame;
   self.magnified = NO;
 }
 
