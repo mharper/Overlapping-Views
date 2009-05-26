@@ -42,6 +42,7 @@
 {
   if (!magnified)
   {
+    [self.superview bringSubviewToFront:self];
     [self magnify];
   }
 }
