@@ -22,7 +22,7 @@
 }
 
 
-- (void)drawRect:(CGRect)rect {
+-(void) drawRect:(CGRect) rect {
   
   // Save the current context.
   CGContextRef context = UIGraphicsGetCurrentContext();

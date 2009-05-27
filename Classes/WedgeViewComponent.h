@@ -29,5 +29,6 @@
 -(void) stopTrackingTouches;
 -(void) magnify;
 -(void) unmagnify;
+-(CGPathRef) componentDrawingPath;
 
 @end

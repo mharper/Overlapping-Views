@@ -86,6 +86,10 @@
     // Drawing code
 }
 
+-(CGPathRef) componentDrawingPath
+{
+}
+
 - (void)dealloc {
     [super dealloc];
 }
