@@ -29,8 +29,6 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-      // Add the various subviews that comprise the entire wedge.
-      NSLog(@"WedgeView initWithFrame:\n");
     }
     return self;
 }
@@ -39,42 +37,18 @@
 	if (self = [super initWithCoder:coder])
   {
     self.selectedComponentView = nil;
+    
+    // Add the various subviews that comprise the entire wedge.
+    CGFloat overallWedgeRadius = 130.0;
+    CGFloat innerWedgeRadius = overallWedgeRadius * 3.0 / 5.0;
+    WedgeViewComponent *innerWedge = [WedgeViewComponent wedgeWithOuterRadius:innerWedgeRadius radialLength:innerWedgeRadius];
+    innerWedge.tag = 501;
+    innerWedge.frame = CGRectMake(25, 25, innerWedge.frame.size.width, innerWedge.frame.size.height);
+    [self addSubview:innerWedge];
 	}
 	return self;
 }
 
-/*
-- (void)drawRect:(CGRect)rect
-{
-  // Well to start with, the origin is going to be to the left at the midpoint for angle = 0 and
-  // the arc of the circle is going to touch directly across on the right.  For a straight up and down (pi/4) wedge,
-  // the origin is at the bottom and the arc midpoint is at the top.  So, let's draw at least a triangle.
-  
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  // Drawing with a white stroke color
-  CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 1.0);
-	// Draw them with a 2.0 stroke width so they are a bit more visible.
-	CGContextSetLineWidth(context, 2.0);
-  CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + (rect.size.height / 2));
-  CGContextAddLineToPoint(context, rect.size.width, 0);
-  CGContextStrokePath(context);
-/*
-  // Rotate the coordinates by number of wedges already done plus half a wedge.
-  CGContextRotateCTM(context, -((wedgeIndex * WEDGE_ANGLE) + WEDGE_ANGLE / 2.0));
-  CGContextMoveToPoint(context, 0, 0);
-  CGContextAddLineToPoint(context, wedgeRadius, 0);
-  
-  // Rotate a full wedge the other way and finish the wedge.
-  CGContextAddArcToPoint(context, wedgeRadius, wedgeRadius * tan(WEDGE_ANGLE / 2.0), wedgeRadius * cos(WEDGE_ANGLE), wedgeRadius * sin(WEDGE_ANGLE), wedgeRadius);
-  
-  //CGContextAddLineToPoint(context, wedgeRadius, 0);
-  CGContextAddLineToPoint(context, 0, 0);
-  
-  // Fill the wedge.
-  CGContextFillPath(context);
-  CGContextStrokePath(context);
-}
- */  
 
 -(void) touchesBegan:(NSSet *) touches withEvent:(UIEvent *) event
 {

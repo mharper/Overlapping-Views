@@ -11,24 +11,34 @@
 
 @interface WedgeViewComponent : UIView {
   BOOL magnified;
-  CGRect originalViewFrame;
-  CGRect magnifiedViewFrame;
   CGAffineTransform normalTransform;
   CGAffineTransform magnifyTransform;
   CGAffineTransform magnifyBounceTransform;
+  CGFloat innerRadius;
+  CGFloat outerRadius;
+  CGFloat radialLength;
+  CGColorRef strokeColor;
+  CGColorRef fillColor;
 }
 
 @property(nonatomic) BOOL magnified;
-@property(nonatomic) CGRect originalViewFrame;
-@property(nonatomic) CGRect magnifiedViewFrame;
 @property(nonatomic) CGAffineTransform normalTransform;
 @property(nonatomic) CGAffineTransform magnifyTransform;
 @property(nonatomic) CGAffineTransform magnifyBounceTransform;
+@property(nonatomic) CGFloat innerRadius;
+@property(nonatomic) CGFloat outerRadius;
+@property(nonatomic) CGFloat radialLength;
+@property(nonatomic) CGColorRef strokeColor;
+@property(nonatomic) CGColorRef fillColor;
 
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event;
 -(void) stopTrackingTouches;
 -(void) magnify;
 -(void) unmagnify;
 -(CGPathRef) componentDrawingPath;
+
++(WedgeViewComponent *) wedgeWithOuterRadius:(CGFloat) outerRadius radialLength:(CGFloat) radialLength;
++(CGColorRef) defaultStrokeColor;
++(CGColorRef) defaultFillColor;
 
 @end

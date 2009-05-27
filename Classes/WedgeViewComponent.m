@@ -12,15 +12,44 @@
 @implementation WedgeViewComponent
 
 @synthesize magnified;
-@synthesize originalViewFrame;
-@synthesize magnifiedViewFrame;
 @synthesize normalTransform;
 @synthesize magnifyTransform;
 @synthesize magnifyBounceTransform;
+@synthesize innerRadius;
+@synthesize outerRadius;
+@synthesize radialLength;
+@synthesize strokeColor;
+@synthesize fillColor;
+
++(CGColorRef) defaultStrokeColor
+{
+  return [UIColor blackColor].CGColor;
+}
+
++(CGColorRef) defaultFillColor
+{
+  return [UIColor yellowColor].CGColor;
+}
+
++(WedgeViewComponent *) wedgeWithOuterRadius:(CGFloat) outerRadius radialLength:(CGFloat) radialLength
+{
+  WedgeViewComponent *newComponent = [[[WedgeViewComponent alloc] init] autorelease];
+  newComponent.innerRadius = outerRadius - radialLength;
+  newComponent.outerRadius = outerRadius;
+  newComponent.radialLength = radialLength;
+  newComponent.strokeColor = [WedgeViewComponent defaultStrokeColor];
+  newComponent.fillColor = [WedgeViewComponent defaultFillColor];
+  newComponent.bounds = CGRectMake(0, 0, radialLength, radialLength);
+  newComponent.backgroundColor = [UIColor clearColor];
+  return newComponent;
+}
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        // Initialization code
+      magnified = NO;
+      normalTransform = self.transform;
+      magnifyTransform = CGAffineTransformMakeScale(1.5, 1.5);
+      magnifyBounceTransform = CGAffineTransformMakeScale(1.75, 1.75);
     }
     return self;
 }
@@ -29,8 +58,6 @@
 	if (self = [super initWithCoder:coder])
   {
     magnified = NO;
-    originalViewFrame = self.frame;
-    magnifiedViewFrame = CGRectInset(originalViewFrame, -10.0, -10.0);
     normalTransform = self.transform;
     magnifyTransform = CGAffineTransformMakeScale(1.5, 1.5);
     magnifyBounceTransform = CGAffineTransformMakeScale(1.75, 1.75);
@@ -82,12 +109,41 @@
   self.magnified = NO;
 }
 
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+-(void) drawRect:(CGRect) rect {
+  
+  // Save the current context.
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSaveGState(context);
+  
+  // Draw the component path.
+  CGContextSetStrokeColorWithColor(context, strokeColor);
+  CGContextSetFillColorWithColor(context, fillColor);
+  CGContextAddPath(context, [self componentDrawingPath]);
+  CGContextFillPath(context);
+  CGContextAddPath(context, [self componentDrawingPath]);
+  CGContextStrokePath(context);
+  
+  // Restore the context.
+  CGContextRestoreGState(context);
 }
 
 -(CGPathRef) componentDrawingPath
 {
+  static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
+  CGFloat innerX = innerRadius * cos(WEDGE_ANGLE / 2.0);
+  CGFloat outerX = outerRadius * cos(WEDGE_ANGLE / 2.0);
+  CGFloat innerY = innerRadius * sin(WEDGE_ANGLE / 2.0);
+  CGFloat outerY = outerRadius * sin(WEDGE_ANGLE / 2.0);
+  
+  CGMutablePathRef drawingPath = CGPathCreateMutable();
+  CGAffineTransform offsetHorizontallyAndVertically = CGAffineTransformMakeTranslation(-(innerRadius + 10.0), 25.0);
+  CGPathMoveToPoint(drawingPath, &offsetHorizontallyAndVertically, outerX, -outerY);
+  CGPathAddArcToPoint(drawingPath, &offsetHorizontallyAndVertically, outerRadius / cos(WEDGE_ANGLE / 2.0), 0.0, outerX, outerY, outerRadius);
+  CGPathAddLineToPoint(drawingPath, &offsetHorizontallyAndVertically, innerX, innerY);
+  CGPathAddArcToPoint(drawingPath, &offsetHorizontallyAndVertically, innerRadius / cos(WEDGE_ANGLE / 2.0), 0.0, innerX, -innerY, innerRadius);
+  CGPathAddLineToPoint(drawingPath, &offsetHorizontallyAndVertically, outerX, -outerY);
+  
+  return drawingPath;
 }
 
 - (void)dealloc {
