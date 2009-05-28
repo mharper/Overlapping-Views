@@ -124,37 +124,7 @@
 		vrLen = 1176;
 		vrLoc = 157;
 	};
-	081D1C770FCE292F00FF7D6E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 08655D880FCB176700AA1EF9 /* WedgeViewComponent.m */;
-		name = "WedgeViewComponent.m: 153";
-		rLen = 0;
-		rLoc = 4444;
-		rType = 0;
-		vrLen = 1833;
-		vrLoc = 3129;
-	};
 	081D1C890FCE2BCE00FF7D6E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 088767220FC5EE400028D8AA /* WedgeView.m */;
-		name = "WedgeView.m: 50";
-		rLen = 0;
-		rLoc = 1326;
-		rType = 0;
-		vrLen = 2318;
-		vrLoc = 744;
-	};
-	081D1C8A0FCE2BCE00FF7D6E /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 08655D880FCB176700AA1EF9 /* WedgeViewComponent.m */;
-		name = "WedgeViewComponent.m: 153";
-		rLen = 0;
-		rLoc = 4444;
-		rType = 0;
-		vrLen = 1805;
-		vrLoc = 3157;
-	};
-	081D1C8B0FCE2BCE00FF7D6E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 088767220FC5EE400028D8AA /* WedgeView.m */;
 		name = "WedgeView.m: 50";
@@ -292,10 +262,10 @@
 	};
 	08655D880FCB176700AA1EF9 /* WedgeViewComponent.m */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            l = \"CGPathRef path\";\n            r = \"{2522, 18}\";\n            s = 1;\n        },\n                {\n            l = \"const CGAffineTransform * m\";\n            r = \"{2542, 31}\";\n            s = 1;\n        },\n                {\n            l = \"CGPoint point\";\n            r = \"{2575, 17}\";\n            s = 1;\n        },\n                {\n            l = \"_Bool eoFill\";\n            r = \"{2594, 16}\";\n            s = 1;\n        }\n    );\n    r = \"{0, 5103}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {1381, 2492}}";
-			sepNavSelRange = "{1223, 0}";
-			sepNavVisRange = "{622, 1652}";
+			sepNavFolds = "{\n    c =     (\n                {\n            l = \"CGPathRef path\";\n            r = \"{2522, 18}\";\n            s = 1;\n        },\n                {\n            l = \"const CGAffineTransform * m\";\n            r = \"{2542, 31}\";\n            s = 1;\n        },\n                {\n            l = \"CGPoint point\";\n            r = \"{2575, 17}\";\n            s = 1;\n        },\n                {\n            l = \"_Bool eoFill\";\n            r = \"{2594, 16}\";\n            s = 1;\n        }\n    );\n    r = \"{0, 5144}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1381, 2604}}";
+			sepNavSelRange = "{2837, 0}";
+			sepNavVisRange = "{2227, 1134}";
 		};
 	};
 	08655DB60FCB27BC00AA1EF9 /* PBXTextBookmark */ = {
@@ -522,6 +492,16 @@
 			sepNavVisRange = "{744, 2318}";
 		};
 	};
+	088D1B2C0FCE32DF0004BF23 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08655D880FCB176700AA1EF9 /* WedgeViewComponent.m */;
+		name = "WedgeViewComponent.m: 106";
+		rLen = 0;
+		rLoc = 2915;
+		rType = 0;
+		vrLen = 1212;
+		vrLoc = 2227;
+	};
 	1D3623240D0F684500981E51 /* Overlapping_ViewsAppDelegate.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {543, 345}}";
@@ -597,8 +577,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 265167247;
-			PBXWorkspaceStateSaveDate = 265167247;
+			PBXPerProjectTemplateStateSaveDate = 265171145;
+			PBXWorkspaceStateSaveDate = 265171145;
 		};
 		perUserProjectItems = {
 			08141ED70FCDA3BC00F1AFF8 /* PBXTextBookmark */ = 08141ED70FCDA3BC00F1AFF8 /* PBXTextBookmark */;
@@ -610,10 +590,7 @@
 			08141F8A0FCDBF9F00F1AFF8 /* PBXTextBookmark */ = 08141F8A0FCDBF9F00F1AFF8 /* PBXTextBookmark */;
 			08141FE70FCDC7CD00F1AFF8 /* PBXTextBookmark */ = 08141FE70FCDC7CD00F1AFF8 /* PBXTextBookmark */;
 			08141FED0FCDC99900F1AFF8 /* PBXTextBookmark */ = 08141FED0FCDC99900F1AFF8 /* PBXTextBookmark */;
-			081D1C770FCE292F00FF7D6E /* PBXTextBookmark */ = 081D1C770FCE292F00FF7D6E /* PBXTextBookmark */;
 			081D1C890FCE2BCE00FF7D6E /* PBXTextBookmark */ = 081D1C890FCE2BCE00FF7D6E /* PBXTextBookmark */;
-			081D1C8A0FCE2BCE00FF7D6E /* PBXTextBookmark */ = 081D1C8A0FCE2BCE00FF7D6E /* PBXTextBookmark */;
-			081D1C8B0FCE2BCE00FF7D6E /* PBXTextBookmark */ = 081D1C8B0FCE2BCE00FF7D6E /* PBXTextBookmark */;
 			081D1C980FCE2EF300FF7D6E /* PBXTextBookmark */ = 081D1C980FCE2EF300FF7D6E /* PBXTextBookmark */;
 			08655DB60FCB27BC00AA1EF9 /* PBXTextBookmark */ = 08655DB60FCB27BC00AA1EF9 /* PBXTextBookmark */;
 			08655DB70FCB27BC00AA1EF9 /* PBXTextBookmark */ = 08655DB70FCB27BC00AA1EF9 /* PBXTextBookmark */;
@@ -636,6 +613,7 @@
 			086567950FCD0DCA008C9FCD /* PBXTextBookmark */ = 086567950FCD0DCA008C9FCD /* PBXTextBookmark */;
 			0865679B0FCD0DCA008C9FCD /* PBXTextBookmark */ = 0865679B0FCD0DCA008C9FCD /* PBXTextBookmark */;
 			0865679E0FCD0DCA008C9FCD /* PBXTextBookmark */ = 0865679E0FCD0DCA008C9FCD /* PBXTextBookmark */;
+			088D1B2C0FCE32DF0004BF23 /* PBXTextBookmark */ = 088D1B2C0FCE32DF0004BF23 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 0833A6B50FC5B9AC00AA0064 /* Source Control */;
 		userBuildSettings = {

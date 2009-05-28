@@ -103,6 +103,7 @@
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
 	self.transform = magnifyBounceTransform;
+  self.alpha = 0.75;
 	[UIView commitAnimations];
   self.magnified = YES;
 }
@@ -119,6 +120,7 @@
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
 	self.transform = normalTransform;	
+  self.alpha = 1.0;
 	[UIView commitAnimations];
   self.magnified = NO;
 }
