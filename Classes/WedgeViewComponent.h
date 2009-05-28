@@ -31,6 +31,7 @@
 @property(nonatomic) CGColorRef strokeColor;
 @property(nonatomic) CGColorRef fillColor;
 
+-(BOOL) shouldTrackTouches:(NSSet *) touches withEvent:(UIEvent *) event;
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event;
 -(void) stopTrackingTouches;
 -(void) magnify;

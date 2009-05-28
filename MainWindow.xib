@@ -50,7 +50,7 @@
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC41AA</bytes>
-									<object class="NSColorSpace" key="NSCustomColorSpace" id="287727180">
+									<object class="NSColorSpace" key="NSCustomColorSpace">
 										<int key="NSID">2</int>
 									</object>
 								</object>
@@ -72,60 +72,6 @@
 							<object class="IBUIView" id="596637209">
 								<reference key="NSNextResponder" ref="786439311"/>
 								<int key="NSvFlags">1316</int>
-								<object class="NSMutableArray" key="NSSubviews">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<object class="IBUIView" id="657330213">
-										<reference key="NSNextResponder" ref="596637209"/>
-										<int key="NSvFlags">1298</int>
-										<string key="NSFrame">{{36, 68}, {50, 50}}</string>
-										<reference key="NSSuperview" ref="596637209"/>
-										<object class="NSColor" key="IBUIBackgroundColor">
-											<int key="NSColorSpace">3</int>
-											<bytes key="NSWhite">MSAwAA</bytes>
-											<reference key="NSCustomColorSpace" ref="287727180"/>
-										</object>
-										<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-										<int key="IBUITag">101</int>
-									</object>
-									<object class="IBUIView" id="175694733">
-										<reference key="NSNextResponder" ref="596637209"/>
-										<int key="NSvFlags">1298</int>
-										<string key="NSFrame">{{94, 56}, {50, 75}}</string>
-										<reference key="NSSuperview" ref="596637209"/>
-										<object class="NSColor" key="IBUIBackgroundColor">
-											<int key="NSColorSpace">3</int>
-											<bytes key="NSWhite">MSAwAA</bytes>
-											<reference key="NSCustomColorSpace" ref="287727180"/>
-										</object>
-										<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-										<int key="IBUITag">103</int>
-									</object>
-									<object class="IBUIView" id="147326682">
-										<reference key="NSNextResponder" ref="596637209"/>
-										<int key="NSvFlags">1298</int>
-										<string key="NSFrame">{{77, 62}, {22, 62}}</string>
-										<reference key="NSSuperview" ref="596637209"/>
-										<object class="NSColor" key="IBUIBackgroundColor">
-											<int key="NSColorSpace">1</int>
-											<bytes key="NSRGB">MC4xOTI4NjE2OCAxIDAuMjYzNTcxOCAwLjk5MDAwMDAxAA</bytes>
-										</object>
-										<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-										<int key="IBUITag">102</int>
-									</object>
-									<object class="IBUIView" id="578604493">
-										<reference key="NSNextResponder" ref="596637209"/>
-										<int key="NSvFlags">1298</int>
-										<string key="NSFrame">{{140, 49}, {22, 89}}</string>
-										<reference key="NSSuperview" ref="596637209"/>
-										<object class="NSColor" key="IBUIBackgroundColor">
-											<int key="NSColorSpace">3</int>
-											<bytes key="NSWhite">MSAwAA</bytes>
-											<reference key="NSCustomColorSpace" ref="287727180"/>
-										</object>
-										<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-										<int key="IBUITag">104</int>
-									</object>
-								</object>
 								<string key="NSFrame">{{20, 187}, {201, 190}}</string>
 								<reference key="NSSuperview" ref="786439311"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
@@ -248,32 +194,8 @@
 						<reference key="object" ref="596637209"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="657330213"/>
-							<reference ref="147326682"/>
-							<reference ref="175694733"/>
-							<reference ref="578604493"/>
 						</object>
 						<reference key="parent" ref="786439311"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">15</int>
-						<reference key="object" ref="657330213"/>
-						<reference key="parent" ref="596637209"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">16</int>
-						<reference key="object" ref="147326682"/>
-						<reference key="parent" ref="596637209"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">17</int>
-						<reference key="object" ref="175694733"/>
-						<reference key="parent" ref="596637209"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">18</int>
-						<reference key="object" ref="578604493"/>
-						<reference key="parent" ref="596637209"/>
 					</object>
 				</object>
 			</object>
@@ -291,14 +213,6 @@
 					<string>12.IBPluginDependency</string>
 					<string>14.CustomClassName</string>
 					<string>14.IBPluginDependency</string>
-					<string>15.CustomClassName</string>
-					<string>15.IBPluginDependency</string>
-					<string>16.CustomClassName</string>
-					<string>16.IBPluginDependency</string>
-					<string>17.CustomClassName</string>
-					<string>17.IBPluginDependency</string>
-					<string>18.CustomClassName</string>
-					<string>18.IBPluginDependency</string>
 					<string>2.IBAttributePlaceholdersKey</string>
 					<string>2.IBEditorWindowLastContentRect</string>
 					<string>2.IBPluginDependency</string>
@@ -316,14 +230,6 @@
 					<string>OverlappingView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>WedgeView</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>InnerWedgeArcView</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>TripleRingArcView</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>OuterWedgeArcView</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>DoubleRingArcView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSMutableDictionary">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -366,30 +272,6 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">DoubleRingArcView</string>
-					<string key="superclassName">WedgeViewComponent</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/DoubleRingArcView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">InnerWedgeArcView</string>
-					<string key="superclassName">WedgeViewComponent</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/InnerWedgeArcView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">OuterWedgeArcView</string>
-					<string key="superclassName">WedgeViewComponent</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/OuterWedgeArcView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">OverlappingView</string>
 					<string key="superclassName">UIView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -418,27 +300,11 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">TripleRingArcView</string>
-					<string key="superclassName">WedgeViewComponent</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/TripleRingArcView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">WedgeView</string>
 					<string key="superclassName">UIView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/WedgeView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">WedgeViewComponent</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/WedgeViewComponent.h</string>
 					</object>
 				</object>
 			</object>

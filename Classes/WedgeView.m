@@ -40,11 +40,41 @@
     
     // Add the various subviews that comprise the entire wedge.
     CGFloat overallWedgeRadius = 130.0;
+    CGFloat ringThickness = 9.0;
+    CGFloat wedgeX = 25.0;
+    
+    // Add inner wedge.
     CGFloat innerWedgeRadius = overallWedgeRadius * 3.0 / 5.0;
     WedgeViewComponent *innerWedge = [WedgeViewComponent wedgeWithOuterRadius:innerWedgeRadius radialLength:innerWedgeRadius];
     innerWedge.tag = 501;
-    innerWedge.frame = CGRectMake(25, 25, innerWedge.frame.size.width, innerWedge.frame.size.height);
+    innerWedge.frame = CGRectMake(wedgeX, 25.0, innerWedge.frame.size.width, innerWedge.frame.size.height);
     [self addSubview:innerWedge];
+    wedgeX += innerWedge.frame.size.width;
+    
+    // Add triple ring.
+    CGFloat tripleRingRadius = innerWedgeRadius + ringThickness;
+    WedgeViewComponent *tripleRing = [WedgeViewComponent wedgeWithOuterRadius:tripleRingRadius radialLength:ringThickness];
+    tripleRing.fillColor = [UIColor greenColor].CGColor;
+    tripleRing.tag = 503;
+    tripleRing.frame = CGRectMake(wedgeX, 25.0 - (tripleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, tripleRing.frame.size.width, tripleRing.frame.size.height);
+    [self addSubview:tripleRing];
+    wedgeX += tripleRing.frame.size.width;
+    
+    // Add outer wedge.
+    CGFloat outerWedgeRadius = overallWedgeRadius - ringThickness;
+    WedgeViewComponent *outerWedge = [WedgeViewComponent wedgeWithOuterRadius:outerWedgeRadius radialLength:outerWedgeRadius - tripleRingRadius];
+    outerWedge.tag = 504;
+    outerWedge.frame = CGRectMake(wedgeX, 25.0 - (outerWedge.frame.size.height - innerWedge.frame.size.height) / 2.0, outerWedge.frame.size.width, outerWedge.frame.size.height);
+    [self addSubview:outerWedge];
+    wedgeX += outerWedge.frame.size.width;
+    
+    // Add double ring.
+    CGFloat doubleRingRadius = overallWedgeRadius;
+    WedgeViewComponent *doubleRing = [WedgeViewComponent wedgeWithOuterRadius:doubleRingRadius radialLength:ringThickness];
+    doubleRing.fillColor = [UIColor greenColor].CGColor;
+    doubleRing.tag = 502;
+    doubleRing.frame = CGRectMake(wedgeX, 25.0 - (doubleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, doubleRing.frame.size.width, doubleRing.frame.size.height);
+    [self addSubview:doubleRing];
 	}
 	return self;
 }
@@ -55,7 +85,10 @@
   WedgeViewComponent *touchedView = [self viewFromTouches:touches withEvent:event];
   if (touchedView != nil)
   {
-    [touchedView trackTouches:touches withEvent:event];
+    if ([touchedView shouldTrackTouches:touches withEvent:event])
+    {
+      [touchedView trackTouches:touches withEvent:event];
+    }
     self.selectedComponentView = touchedView;
   }
 }

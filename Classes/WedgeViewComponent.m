@@ -33,13 +33,14 @@
 
 +(WedgeViewComponent *) wedgeWithOuterRadius:(CGFloat) outerRadius radialLength:(CGFloat) radialLength
 {
+  static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
   WedgeViewComponent *newComponent = [[[WedgeViewComponent alloc] init] autorelease];
   newComponent.innerRadius = outerRadius - radialLength;
   newComponent.outerRadius = outerRadius;
   newComponent.radialLength = radialLength;
   newComponent.strokeColor = [WedgeViewComponent defaultStrokeColor];
   newComponent.fillColor = [WedgeViewComponent defaultFillColor];
-  newComponent.bounds = CGRectMake(0, 0, radialLength, radialLength);
+  newComponent.bounds = CGRectMake(0, 0, outerRadius - (newComponent.innerRadius * cos(WEDGE_ANGLE/ 2.0)), 2.0 * outerRadius * sin(WEDGE_ANGLE / 2.0));
   newComponent.backgroundColor = [UIColor clearColor];
   return newComponent;
 }
@@ -65,6 +66,12 @@
 	return self;
 }
 
+-(BOOL) shouldTrackTouches:(NSSet *) touches withEvent:(UIEvent *) event
+{
+  // Should only track touches if the point is inside the drawing area.
+  return YES;
+}
+
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event
 {
   if (!magnified)
@@ -80,6 +87,13 @@
   {
     [self unmagnify];
   }
+}
+
+-(BOOL) touchInDrawingArea:(NSSet *) touches withEvent:(UIEvent *)event
+{
+//  UITouch *touch = [touches anyObject];	
+//  CGPathContainsPoint(<#CGPathRef path#>, <#const CGAffineTransform * m#>, <#CGPoint point#>, <#_Bool eoFill#>);
+  return YES;
 }
 
 -(void) magnify
@@ -136,7 +150,8 @@
   CGFloat outerY = outerRadius * sin(WEDGE_ANGLE / 2.0);
   
   CGMutablePathRef drawingPath = CGPathCreateMutable();
-  CGAffineTransform offsetHorizontallyAndVertically = CGAffineTransformMakeTranslation(-(innerRadius + 10.0), 25.0);
+  CGAffineTransform offsetHorizontallyAndVertically = CGAffineTransformMakeTranslation(-(innerRadius * cos(WEDGE_ANGLE / 2.0)), self.bounds.size.height / 2.0);
+  
   CGPathMoveToPoint(drawingPath, &offsetHorizontallyAndVertically, outerX, -outerY);
   CGPathAddArcToPoint(drawingPath, &offsetHorizontallyAndVertically, outerRadius / cos(WEDGE_ANGLE / 2.0), 0.0, outerX, outerY, outerRadius);
   CGPathAddLineToPoint(drawingPath, &offsetHorizontallyAndVertically, innerX, innerY);
