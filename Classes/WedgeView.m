@@ -48,7 +48,6 @@
     WedgeViewComponent *innerWedge = [WedgeViewComponent wedgeWithOuterRadius:innerWedgeRadius radialLength:innerWedgeRadius];
     innerWedge.tag = 501;
     innerWedge.frame = CGRectMake(wedgeX, 25.0, innerWedge.frame.size.width, innerWedge.frame.size.height);
-    [self addSubview:innerWedge];
     wedgeX += innerWedge.frame.size.width;
     
     // Add triple ring.
@@ -57,7 +56,6 @@
     tripleRing.fillColor = [UIColor greenColor].CGColor;
     tripleRing.tag = 503;
     tripleRing.frame = CGRectMake(wedgeX, 25.0 - (tripleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, tripleRing.frame.size.width, tripleRing.frame.size.height);
-    [self addSubview:tripleRing];
     wedgeX += tripleRing.frame.size.width;
     
     // Add outer wedge.
@@ -65,7 +63,6 @@
     WedgeViewComponent *outerWedge = [WedgeViewComponent wedgeWithOuterRadius:outerWedgeRadius radialLength:outerWedgeRadius - tripleRingRadius];
     outerWedge.tag = 504;
     outerWedge.frame = CGRectMake(wedgeX, 25.0 - (outerWedge.frame.size.height - innerWedge.frame.size.height) / 2.0, outerWedge.frame.size.width, outerWedge.frame.size.height);
-    [self addSubview:outerWedge];
     wedgeX += outerWedge.frame.size.width;
     
     // Add double ring.
@@ -74,7 +71,13 @@
     doubleRing.fillColor = [UIColor greenColor].CGColor;
     doubleRing.tag = 502;
     doubleRing.frame = CGRectMake(wedgeX, 25.0 - (doubleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, doubleRing.frame.size.width, doubleRing.frame.size.height);
+
+    // Add the subviews in the desired priority, e. g. double/triple rings "on top."
+    [self addSubview:innerWedge];
+    [self addSubview:outerWedge];
+    [self addSubview:tripleRing];
     [self addSubview:doubleRing];
+
 	}
 	return self;
 }
