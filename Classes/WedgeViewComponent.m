@@ -12,6 +12,7 @@
 @implementation WedgeViewComponent
 
 @synthesize magnified;
+@synthesize selected;
 @synthesize normalTransform;
 @synthesize magnifyTransform;
 @synthesize magnifyBounceTransform;
@@ -20,6 +21,7 @@
 @synthesize radialLength;
 @synthesize strokeColor;
 @synthesize fillColor;
+@synthesize selectedFillColor;
 
 +(CGColorRef) defaultStrokeColor
 {
@@ -31,6 +33,11 @@
   return [UIColor yellowColor].CGColor;
 }
 
++(CGColorRef) defaultSelectedFillColor
+{
+  return [UIColor cyanColor].CGColor;
+}
+
 +(WedgeViewComponent *) wedgeWithOuterRadius:(CGFloat) outerRadius radialLength:(CGFloat) radialLength
 {
   static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
@@ -40,6 +47,7 @@
   newComponent.radialLength = radialLength;
   newComponent.strokeColor = [WedgeViewComponent defaultStrokeColor];
   newComponent.fillColor = [WedgeViewComponent defaultFillColor];
+  newComponent.selectedFillColor = [WedgeViewComponent defaultSelectedFillColor];
   newComponent.bounds = CGRectMake(0, 0, outerRadius - (newComponent.innerRadius * cos(WEDGE_ANGLE/ 2.0)), 2.0 * outerRadius * sin(WEDGE_ANGLE / 2.0));
   newComponent.backgroundColor = [UIColor clearColor];
   return newComponent;
@@ -48,9 +56,10 @@
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
       magnified = NO;
+      selected = NO;
       normalTransform = self.transform;
-      magnifyTransform = CGAffineTransformMakeScale(1.5, 1.5);
-      magnifyBounceTransform = CGAffineTransformMakeScale(1.75, 1.75);
+      magnifyTransform = CGAffineTransformMakeScale(3.0, 3.0);
+      magnifyBounceTransform = CGAffineTransformMakeScale(3.5, 3.5);
     }
     return self;
 }
@@ -59,6 +68,7 @@
 	if (self = [super initWithCoder:coder])
   {
     magnified = NO;
+    selected = NO;
     normalTransform = self.transform;
     magnifyTransform = CGAffineTransformMakeScale(1.5, 1.5);
     magnifyBounceTransform = CGAffineTransformMakeScale(1.75, 1.75);
@@ -74,19 +84,30 @@
 
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event
 {
+  if (! selected)
+  {
+    selected = YES;
+    [self setNeedsDisplay];
+  }
+  /*
   if (!magnified)
   {
     //[self.superview bringSubviewToFront:self];
     [self magnify];
   }
+   */
 }
 
 -(void) stopTrackingTouches
 {
+  selected = NO;
+  [self setNeedsDisplay];
+  /*
   if (magnified)
   {
     [self unmagnify];
   }
+   */
 }
 
 -(BOOL) touchInDrawingArea:(NSSet *) touches withEvent:(UIEvent *)event
@@ -133,7 +154,7 @@
   
   // Draw the component path.
   CGContextSetStrokeColorWithColor(context, strokeColor);
-  CGContextSetFillColorWithColor(context, fillColor);
+  CGContextSetFillColorWithColor(context, selected ? selectedFillColor : fillColor);
   CGContextAddPath(context, [self componentDrawingPath]);
   CGContextFillPath(context);
   CGContextAddPath(context, [self componentDrawingPath]);

@@ -10,6 +10,10 @@
 
 @interface WedgeView()
 -(WedgeViewComponent *) viewFromTouches:(NSSet *) touches withEvent:(UIEvent *)event;
+-(void) magnify;
+-(void) unmagnify;
+- (void)growAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
+
 @end
 
 @implementation WedgeView
@@ -17,6 +21,9 @@
 @synthesize scoreValue; 
 @synthesize rotateAngle;
 @synthesize selectedComponentView;
+@synthesize normalTransform;
+@synthesize magnifyTransform;
+@synthesize magnifyBounceTransform;
 
 +(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians
 {
@@ -38,16 +45,21 @@
   {
     self.selectedComponentView = nil;
     
+    normalTransform = self.transform;
+    magnifyTransform = CGAffineTransformMakeScale(2.0, 2.0);
+    magnifyBounceTransform = CGAffineTransformMakeScale(2.5, 2.5);
+    
     // Add the various subviews that comprise the entire wedge.
     CGFloat overallWedgeRadius = 130.0;
     CGFloat ringThickness = 9.0;
     CGFloat wedgeX = 25.0;
+    CGFloat wedgeY = self.bounds.size.height / 2.0;
     
     // Add inner wedge.
     CGFloat innerWedgeRadius = overallWedgeRadius * 3.0 / 5.0;
     WedgeViewComponent *innerWedge = [WedgeViewComponent wedgeWithOuterRadius:innerWedgeRadius radialLength:innerWedgeRadius];
     innerWedge.tag = 501;
-    innerWedge.frame = CGRectMake(wedgeX, 25.0, innerWedge.frame.size.width, innerWedge.frame.size.height);
+    innerWedge.frame = CGRectMake(wedgeX, wedgeY, innerWedge.frame.size.width, innerWedge.frame.size.height);
     wedgeX += innerWedge.frame.size.width;
     
     // Add triple ring.
@@ -55,14 +67,14 @@
     WedgeViewComponent *tripleRing = [WedgeViewComponent wedgeWithOuterRadius:tripleRingRadius radialLength:ringThickness];
     tripleRing.fillColor = [UIColor greenColor].CGColor;
     tripleRing.tag = 503;
-    tripleRing.frame = CGRectMake(wedgeX, 25.0 - (tripleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, tripleRing.frame.size.width, tripleRing.frame.size.height);
+    tripleRing.frame = CGRectMake(wedgeX, wedgeY - (tripleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, tripleRing.frame.size.width, tripleRing.frame.size.height);
     wedgeX += tripleRing.frame.size.width;
     
     // Add outer wedge.
     CGFloat outerWedgeRadius = overallWedgeRadius - ringThickness;
     WedgeViewComponent *outerWedge = [WedgeViewComponent wedgeWithOuterRadius:outerWedgeRadius radialLength:outerWedgeRadius - tripleRingRadius];
     outerWedge.tag = 504;
-    outerWedge.frame = CGRectMake(wedgeX, 25.0 - (outerWedge.frame.size.height - innerWedge.frame.size.height) / 2.0, outerWedge.frame.size.width, outerWedge.frame.size.height);
+    outerWedge.frame = CGRectMake(wedgeX, wedgeY - (outerWedge.frame.size.height - innerWedge.frame.size.height) / 2.0, outerWedge.frame.size.width, outerWedge.frame.size.height);
     wedgeX += outerWedge.frame.size.width;
     
     // Add double ring.
@@ -70,7 +82,7 @@
     WedgeViewComponent *doubleRing = [WedgeViewComponent wedgeWithOuterRadius:doubleRingRadius radialLength:ringThickness];
     doubleRing.fillColor = [UIColor greenColor].CGColor;
     doubleRing.tag = 502;
-    doubleRing.frame = CGRectMake(wedgeX, 25.0 - (doubleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, doubleRing.frame.size.width, doubleRing.frame.size.height);
+    doubleRing.frame = CGRectMake(wedgeX, wedgeY - (doubleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, doubleRing.frame.size.width, doubleRing.frame.size.height);
 
     // Add the subviews in the desired priority, e. g. double/triple rings "on top."
     [self addSubview:innerWedge];
@@ -85,6 +97,7 @@
 
 -(void) touchesBegan:(NSSet *) touches withEvent:(UIEvent *) event
 {
+  [self magnify];
   WedgeViewComponent *touchedView = [self viewFromTouches:touches withEvent:event];
   if (touchedView != nil)
   {
@@ -127,6 +140,7 @@
 
 -(void) touchesEnded:(NSSet *) touches withEvent:(UIEvent *) event
 {
+  [self unmagnify];
   if (selectedComponentView != nil)
   {
     [selectedComponentView stopTrackingTouches];
@@ -148,6 +162,35 @@
   UITouch *touch = [touches anyObject];	
   UIView *touchedView = [self hitTest:[touch locationInView:self] withEvent:event];
   return ([touchedView isKindOfClass:[WedgeViewComponent class]] ? (WedgeViewComponent *) touchedView : nil);
+}
+
+-(void) magnify
+{
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.15];
+	[UIView setAnimationDelegate:self];
+	[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
+	self.transform = magnifyBounceTransform;
+  self.alpha = 0.75;
+	[UIView commitAnimations];
+  //self.magnified = YES;
+}
+
+- (void)growAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.15];
+	self.transform = magnifyTransform;	
+	[UIView commitAnimations];
+}
+
+-(void) unmagnify
+{
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.15];
+	self.transform = normalTransform;	
+  self.alpha = 1.0;
+	[UIView commitAnimations];
+  //self.magnified = NO;
 }
 
 - (void)dealloc {

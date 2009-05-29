@@ -11,6 +11,7 @@
 
 @interface WedgeViewComponent : UIView {
   BOOL magnified;
+  BOOL selected;
   CGAffineTransform normalTransform;
   CGAffineTransform magnifyTransform;
   CGAffineTransform magnifyBounceTransform;
@@ -19,9 +20,11 @@
   CGFloat radialLength;
   CGColorRef strokeColor;
   CGColorRef fillColor;
+  CGColorRef selectedFillColor;
 }
 
 @property(nonatomic) BOOL magnified;
+@property(nonatomic) BOOL selected;
 @property(nonatomic) CGAffineTransform normalTransform;
 @property(nonatomic) CGAffineTransform magnifyTransform;
 @property(nonatomic) CGAffineTransform magnifyBounceTransform;
@@ -30,6 +33,7 @@
 @property(nonatomic) CGFloat radialLength;
 @property(nonatomic) CGColorRef strokeColor;
 @property(nonatomic) CGColorRef fillColor;
+@property(nonatomic) CGColorRef selectedFillColor;
 
 -(BOOL) shouldTrackTouches:(NSSet *) touches withEvent:(UIEvent *) event;
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event;
