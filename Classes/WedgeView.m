@@ -92,6 +92,14 @@
     [self addSubview:tripleRing];
     [self addSubview:doubleRing];
 
+    // Set the magnification transforms differently for the double and triple rings.
+    CGAffineTransform ringMagnifyTransform = CGAffineTransformMakeScale(1.5, 3.0);
+    CGAffineTransform ringMagnifyBounceTransform = CGAffineTransformMakeScale(2.0, 4.0);
+    doubleRing.magnifyTransform = ringMagnifyTransform;
+    doubleRing.magnifyBounceTransform = ringMagnifyBounceTransform;
+    tripleRing.magnifyTransform = ringMagnifyTransform;
+    tripleRing.magnifyBounceTransform = ringMagnifyBounceTransform;
+
 	}
 	return self;
 }
@@ -205,8 +213,8 @@
   CGPoint touchPoint = [[touches anyObject] locationInView:self];
   touchPoint.y -= 25.0;
   selectionScoreView.center = touchPoint;
-  [self bringSubviewToFront:selectionScoreView];
-  selectionScoreView.hidden = NO;
+//  [self bringSubviewToFront:selectionScoreView];
+//  selectionScoreView.hidden = NO;
 }
 
 - (void)dealloc {
