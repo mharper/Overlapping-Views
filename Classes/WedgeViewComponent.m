@@ -58,8 +58,8 @@
       magnified = NO;
       selected = NO;
       normalTransform = self.transform;
-      magnifyTransform = CGAffineTransformMakeScale(3.0, 3.0);
-      magnifyBounceTransform = CGAffineTransformMakeScale(3.5, 3.5);
+      magnifyTransform = CGAffineTransformMakeScale(1.5, 1.5);
+      magnifyBounceTransform = CGAffineTransformMakeScale(2.0, 2.0);
     }
     return self;
 }
@@ -71,7 +71,7 @@
     selected = NO;
     normalTransform = self.transform;
     magnifyTransform = CGAffineTransformMakeScale(1.5, 1.5);
-    magnifyBounceTransform = CGAffineTransformMakeScale(1.75, 1.75);
+    magnifyBounceTransform = CGAffineTransformMakeScale(2.0, 2.0);
 	}
 	return self;
 }
@@ -88,26 +88,22 @@
   {
     selected = YES;
     [self setNeedsDisplay];
+    if (!magnified)
+    {
+      //[self.superview bringSubviewToFront:self];
+      [self magnify];
+    }
   }
-  /*
-  if (!magnified)
-  {
-    //[self.superview bringSubviewToFront:self];
-    [self magnify];
-  }
-   */
 }
 
 -(void) stopTrackingTouches
 {
   selected = NO;
   [self setNeedsDisplay];
-  /*
   if (magnified)
   {
     [self unmagnify];
   }
-   */
 }
 
 -(BOOL) touchInDrawingArea:(NSSet *) touches withEvent:(UIEvent *)event
