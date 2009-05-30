@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "WedgeView.h"
 
 @interface WedgeViewComponent : UIView {
   BOOL magnified;
@@ -21,6 +21,7 @@
   CGColorRef strokeColor;
   CGColorRef fillColor;
   CGColorRef selectedFillColor;
+  WedgeView *containingWedge;
 }
 
 @property(nonatomic) BOOL magnified;
@@ -34,6 +35,7 @@
 @property(nonatomic) CGColorRef strokeColor;
 @property(nonatomic) CGColorRef fillColor;
 @property(nonatomic) CGColorRef selectedFillColor;
+@property(nonatomic, retain) WedgeView *containingWedge;
 
 -(BOOL) shouldTrackTouches:(NSSet *) touches withEvent:(UIEvent *) event;
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event;

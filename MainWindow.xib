@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="12"/>
+			<integer value="20"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -72,6 +72,31 @@
 							<object class="IBUIView" id="596637209">
 								<reference key="NSNextResponder" ref="786439311"/>
 								<int key="NSvFlags">1316</int>
+								<object class="NSMutableArray" key="NSSubviews">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<object class="IBUILabel" id="113219373">
+										<reference key="NSNextResponder" ref="596637209"/>
+										<int key="NSvFlags">1316</int>
+										<string key="NSFrame">{{73, 38}, {42, 21}}</string>
+										<reference key="NSSuperview" ref="596637209"/>
+										<object class="NSColor" key="IBUIBackgroundColor">
+											<int key="NSColorSpace">3</int>
+											<bytes key="NSWhite">MQA</bytes>
+										</object>
+										<bool key="IBUIOpaque">NO</bool>
+										<bool key="IBUIClipsSubviews">YES</bool>
+										<bool key="IBUIUserInteractionEnabled">NO</bool>
+										<string key="IBUIText">6</string>
+										<object class="NSColor" key="IBUITextColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MCAwIDAAA</bytes>
+										</object>
+										<nil key="IBUIHighlightedColor"/>
+										<int key="IBUIBaselineAdjustment">1</int>
+										<float key="IBUIMinimumFontSize">1.000000e+01</float>
+										<int key="IBUITextAlignment">1</int>
+									</object>
+								</object>
 								<string key="NSFrame">{{20, 262}, {201, 102}}</string>
 								<reference key="NSSuperview" ref="786439311"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
@@ -122,6 +147,14 @@
 						<reference key="destination" ref="380026005"/>
 					</object>
 					<int key="connectionID">5</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">selectionScoreView</string>
+						<reference key="source" ref="596637209"/>
+						<reference key="destination" ref="113219373"/>
+					</object>
+					<int key="connectionID">21</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -195,8 +228,15 @@
 						<reference key="object" ref="596637209"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="113219373"/>
 						</object>
 						<reference key="parent" ref="786439311"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">20</int>
+						<reference key="object" ref="113219373"/>
+						<reference key="parent" ref="596637209"/>
+						<string key="objectName">Selected Score</string>
 					</object>
 				</object>
 			</object>
@@ -217,6 +257,7 @@
 					<string>2.IBAttributePlaceholdersKey</string>
 					<string>2.IBEditorWindowLastContentRect</string>
 					<string>2.IBPluginDependency</string>
+					<string>20.IBPluginDependency</string>
 					<string>3.CustomClassName</string>
 					<string>3.IBPluginDependency</string>
 				</object>
@@ -243,6 +284,7 @@
 					</object>
 					<string>{{859, 580}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>Overlapping_ViewsAppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
@@ -267,7 +309,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">18</int>
+			<int key="maxID">21</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -303,6 +345,10 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">WedgeView</string>
 					<string key="superclassName">UIView</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">selectionScoreView</string>
+						<string key="NS.object.0">UILabel</string>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/WedgeView.h</string>

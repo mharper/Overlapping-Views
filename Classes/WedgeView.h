@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WedgeViewComponent.h"
+
+@class WedgeViewComponent;
 
 @interface WedgeView : UIView {
   NSInteger scoreValue;             // 1..20
@@ -16,7 +17,11 @@
   CGAffineTransform normalTransform;
   CGAffineTransform magnifyTransform;
   CGAffineTransform magnifyBounceTransform;
+  IBOutlet UILabel *selectionScoreView;
 }
+
+-(void) hideSelectionScoreView;
+-(void) moveSelectionScoreViewNear:(NSSet *) touches withEvent:(UIEvent *) event;
 
 +(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians;
 
@@ -26,5 +31,6 @@
 @property(nonatomic) CGAffineTransform normalTransform;
 @property(nonatomic) CGAffineTransform magnifyTransform;
 @property(nonatomic) CGAffineTransform magnifyBounceTransform;
+@property(nonatomic, retain) UILabel *selectionScoreView;
 
 @end

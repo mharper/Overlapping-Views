@@ -7,7 +7,7 @@
 //
 
 #import "WedgeViewComponent.h"
-
+#import "WedgeView.h"
 
 @implementation WedgeViewComponent
 
@@ -22,6 +22,7 @@
 @synthesize strokeColor;
 @synthesize fillColor;
 @synthesize selectedFillColor;
+@synthesize containingWedge;
 
 +(CGColorRef) defaultStrokeColor
 {
@@ -94,6 +95,7 @@
       [self magnify];
     }
   }
+  [containingWedge moveSelectionScoreViewNear:touches withEvent:event];
 }
 
 -(void) stopTrackingTouches
@@ -103,6 +105,7 @@
   if (magnified)
   {
     [self unmagnify];
+    [containingWedge hideSelectionScoreView];
   }
 }
 
@@ -179,6 +182,12 @@
   
   return drawingPath;
 }
+
+-(void) didMoveToSuperview
+{
+  self.containingWedge = (WedgeView *) [self superview];
+}
+
 
 - (void)dealloc {
     [super dealloc];

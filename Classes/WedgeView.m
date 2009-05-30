@@ -7,6 +7,7 @@
 //
 
 #import "WedgeView.h"
+#import "WedgeViewComponent.h"
 
 @interface WedgeView()
 -(WedgeViewComponent *) viewFromTouches:(NSSet *) touches withEvent:(UIEvent *)event;
@@ -24,6 +25,7 @@
 @synthesize normalTransform;
 @synthesize magnifyTransform;
 @synthesize magnifyBounceTransform;
+@synthesize selectionScoreView;
 
 +(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians
 {
@@ -171,7 +173,7 @@
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
 	self.transform = magnifyBounceTransform;
-  self.alpha = 0.75;
+//  self.alpha = 0.75;
 	[UIView commitAnimations];
   //self.magnified = YES;
 }
@@ -191,6 +193,20 @@
   self.alpha = 1.0;
 	[UIView commitAnimations];
   //self.magnified = NO;
+}
+
+-(void) hideSelectionScoreView
+{
+  selectionScoreView.hidden = YES;
+}
+
+- (void) moveSelectionScoreViewNear:(NSSet *) touches withEvent:(UIEvent *) event
+{
+  CGPoint touchPoint = [[touches anyObject] locationInView:self];
+  touchPoint.y -= 25.0;
+  selectionScoreView.center = touchPoint;
+  [self bringSubviewToFront:selectionScoreView];
+  selectionScoreView.hidden = NO;
 }
 
 - (void)dealloc {
