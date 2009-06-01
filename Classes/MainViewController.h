@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "WedgeView.h"
 
 @interface MainViewController : UIViewController {
-
+  IBOutlet WedgeView *wedgeView;
+  IBOutlet UITextField *rotationAngleField;
 }
+
+@property(nonatomic, retain) WedgeView *wedgeView;
+@property(nonatomic, retain) UITextField *rotationAngleField;
+
+-(IBAction) updateWedgeAngle:(id) sender;
 
 @end

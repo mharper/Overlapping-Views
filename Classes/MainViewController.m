@@ -11,6 +11,9 @@
 
 @implementation MainViewController
 
+@synthesize wedgeView;
+@synthesize rotationAngleField;
+
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -41,6 +44,12 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
+
+-(IBAction) updateWedgeAngle:(id) sender
+{
+  [rotationAngleField resignFirstResponder];
+  wedgeView.rotateAngle = [rotationAngleField.text floatValue];
+}
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.

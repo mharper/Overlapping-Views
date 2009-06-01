@@ -32,9 +32,16 @@
   WedgeView *newWedge = [[[WedgeView alloc] init] autorelease];
   newWedge.scoreValue = scoreValue;
   newWedge.rotateAngle = radians;
+  
   return newWedge;
 }
 
+
+-(void) setRotateAngle:(CGFloat) angle
+{
+  self->rotateAngle = angle;
+  self.transform = CGAffineTransformMakeRotation(angle);
+}
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
