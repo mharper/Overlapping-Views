@@ -8,21 +8,16 @@
 
 #import "MainViewController.h"
 
-
 @implementation MainViewController
 
 @synthesize wedgeView;
 @synthesize rotationAngleField;
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
     }
     return self;
 }
-*/
 
 /*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -30,12 +25,23 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-    [super viewDidLoad];
+  
+  // Load the wedges.
+  static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
+  for (int w = 0; w < 5; w++)
+  {
+    WedgeView *newWedge = [WedgeView wedgeWithValue:w angle:w * WEDGE_ANGLE];
+    [self.view addSubview:newWedge];
+    NSLog(@"Added wedge %d\n", w);
+  }
+  
+  [super viewDidLoad];
+
 }
-*/
+
 
 /*
 // Override to allow orientations other than the default portrait orientation.
