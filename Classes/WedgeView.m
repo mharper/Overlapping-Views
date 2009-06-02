@@ -40,7 +40,8 @@
 -(void) setRotateAngle:(CGFloat) angle
 {
   self->rotateAngle = angle;
-  self.transform = CGAffineTransformMakeRotation(angle);
+  self.normalTransform = CGAffineTransformMakeRotation(angle);
+  self.transform = normalTransform;
 }
 
 - (id)initWithFrame:(CGRect)frame {
