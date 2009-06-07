@@ -24,6 +24,9 @@
 @synthesize selectedFillColor;
 @synthesize containingWedge;
 
+static CGFloat WEDGE_COMPONENT_MARGIN = 1.0;
+static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
+
 +(CGColorRef) defaultStrokeColor
 {
   return [UIColor blackColor].CGColor;
@@ -41,15 +44,17 @@
 
 +(WedgeViewComponent *) wedgeWithOuterRadius:(CGFloat) outerRadius radialLength:(CGFloat) radialLength
 {
-  static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
-  WedgeViewComponent *newComponent = [[[WedgeViewComponent alloc] init] autorelease];
-  newComponent.innerRadius = outerRadius - radialLength;
+  CGFloat innerRadius = outerRadius - radialLength;
+  CGRect wedgeViewRect = CGRectMake(0, 0,
+                                    outerRadius - (innerRadius * cos(WEDGE_ANGLE/ 2.0)) + 2.0 * WEDGE_COMPONENT_MARGIN, 
+                                    2.0 * outerRadius * sin(WEDGE_ANGLE / 2.0) + 2.0 * WEDGE_COMPONENT_MARGIN);
+  WedgeViewComponent *newComponent = [[[WedgeViewComponent alloc] initWithFrame:wedgeViewRect] autorelease];
+  newComponent.innerRadius = innerRadius;
   newComponent.outerRadius = outerRadius;
   newComponent.radialLength = radialLength;
   newComponent.strokeColor = [WedgeViewComponent defaultStrokeColor];
   newComponent.fillColor = [WedgeViewComponent defaultFillColor];
   newComponent.selectedFillColor = [WedgeViewComponent defaultSelectedFillColor];
-  newComponent.bounds = CGRectMake(0, 0, outerRadius - (newComponent.innerRadius * cos(WEDGE_ANGLE/ 2.0)), 2.0 * outerRadius * sin(WEDGE_ANGLE / 2.0));
   newComponent.backgroundColor = [UIColor clearColor];
   return newComponent;
 }
@@ -165,14 +170,13 @@
 
 -(CGPathRef) componentDrawingPath
 {
-  static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
   CGFloat innerX = innerRadius * cos(WEDGE_ANGLE / 2.0);
   CGFloat outerX = outerRadius * cos(WEDGE_ANGLE / 2.0);
   CGFloat innerY = innerRadius * sin(WEDGE_ANGLE / 2.0);
   CGFloat outerY = outerRadius * sin(WEDGE_ANGLE / 2.0);
   
   CGMutablePathRef drawingPath = CGPathCreateMutable();
-  CGAffineTransform offsetHorizontallyAndVertically = CGAffineTransformMakeTranslation(-(innerRadius * cos(WEDGE_ANGLE / 2.0)), self.bounds.size.height / 2.0);
+  CGAffineTransform offsetHorizontallyAndVertically = CGAffineTransformMakeTranslation(-(innerRadius * cos(WEDGE_ANGLE / 2.0) - WEDGE_COMPONENT_MARGIN), self.bounds.size.height / 2.0);
   
   CGPathMoveToPoint(drawingPath, &offsetHorizontallyAndVertically, outerX, -outerY);
   CGPathAddArcToPoint(drawingPath, &offsetHorizontallyAndVertically, outerRadius / cos(WEDGE_ANGLE / 2.0), 0.0, outerX, outerY, outerRadius);

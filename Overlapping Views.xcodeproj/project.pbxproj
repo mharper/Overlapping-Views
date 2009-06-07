@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08128F5F0FDC63C9004BD547 /* OutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08128F5E0FDC63C9004BD547 /* OutlineView.m */; };
 		08141EEA0FCDA41A00F1AFF8 /* WedgeViewComponentTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08141EDF0FCDA3FB00F1AFF8 /* WedgeViewComponentTest.m */; };
 		08141F000FCDAE1C00F1AFF8 /* WedgeViewComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 08655D880FCB176700AA1EF9 /* WedgeViewComponent.m */; };
 		0833A6B90FC5B9BF00AA0064 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0833A6B80FC5B9BF00AA0064 /* MainViewController.m */; };
@@ -26,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		08128F5D0FDC63C9004BD547 /* OutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutlineView.h; sourceTree = "<group>"; };
+		08128F5E0FDC63C9004BD547 /* OutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutlineView.m; sourceTree = "<group>"; };
 		08141EDE0FCDA3FB00F1AFF8 /* WedgeViewComponentTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WedgeViewComponentTest.h; sourceTree = "<group>"; };
 		08141EDF0FCDA3FB00F1AFF8 /* WedgeViewComponentTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WedgeViewComponentTest.m; sourceTree = "<group>"; };
 		08141EE50FCDA40C00F1AFF8 /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +103,8 @@
 				08655D840FCB15C000AA1EF9 /* TripleRingArcView.m */,
 				08655D870FCB176700AA1EF9 /* WedgeViewComponent.h */,
 				08655D880FCB176700AA1EF9 /* WedgeViewComponent.m */,
+				08128F5D0FDC63C9004BD547 /* OutlineView.h */,
+				08128F5E0FDC63C9004BD547 /* OutlineView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -278,6 +283,7 @@
 				08655D820FCB15B600AA1EF9 /* DoubleRingArcView.m in Sources */,
 				08655D850FCB15C000AA1EF9 /* TripleRingArcView.m in Sources */,
 				08655D890FCB176700AA1EF9 /* WedgeViewComponent.m in Sources */,
+				08128F5F0FDC63C9004BD547 /* OutlineView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

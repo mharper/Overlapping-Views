@@ -29,13 +29,17 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
   
+  CGPoint myCenter = CGPointMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0);
+  self.view.transform = CGAffineTransformMakeTranslation(myCenter.x, myCenter.y);
+  
   // Load the wedges.
   static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
-  for (int w = 0; w < 5; w++)
+  for (int w = 0; w < 20; w++)
   {
     WedgeView *newWedge = [WedgeView wedgeWithValue:w angle:w * WEDGE_ANGLE];
+    // newWedge.frame = CGRectMake(myCenter.x, myCenter.y, newWedge.bounds.size.width, newWedge.bounds.size.height);
     [self.view addSubview:newWedge];
-    NSLog(@"Added wedge %d\n", w);
+    NSLog(@"Added wedge %d at (%f, %f, %f, %f)\n", w, newWedge.frame.origin.x, newWedge.frame.origin.y, newWedge.frame.size.width, newWedge.frame.size.height);
   }
   
   [super viewDidLoad];

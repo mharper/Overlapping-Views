@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
+			<integer value="12"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -141,6 +141,18 @@
 									<bytes key="NSWhite">MC41AA</bytes>
 								</object>
 							</object>
+							<object class="IBUIView" id="502994218">
+								<reference key="NSNextResponder" ref="786439311"/>
+								<int key="NSvFlags">1316</int>
+								<string key="NSFrame">{{50, 144}, {171, 60}}</string>
+								<reference key="NSSuperview" ref="786439311"/>
+								<object class="NSColor" key="IBUIBackgroundColor">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
+									<reference key="NSCustomColorSpace" ref="889371128"/>
+								</object>
+								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+							</object>
 						</object>
 						<string key="NSFrame">{{39, 39}, {241, 403}}</string>
 						<reference key="NSSuperview" ref="380026005"/>
@@ -271,6 +283,7 @@
 							<reference ref="466313134"/>
 							<reference ref="219220516"/>
 							<reference ref="91525917"/>
+							<reference ref="502994218"/>
 						</object>
 						<reference key="parent" ref="380026005"/>
 						<string key="objectName">Container</string>
@@ -310,6 +323,11 @@
 						<reference key="object" ref="91525917"/>
 						<reference key="parent" ref="786439311"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">31</int>
+						<reference key="object" ref="502994218"/>
+						<reference key="parent" ref="786439311"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -333,6 +351,8 @@
 					<string>28.IBPluginDependency</string>
 					<string>3.CustomClassName</string>
 					<string>3.IBPluginDependency</string>
+					<string>31.CustomClassName</string>
+					<string>31.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -361,6 +381,8 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>Overlapping_ViewsAppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>OutlineView</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -383,7 +405,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">30</int>
+			<int key="maxID">31</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -411,6 +433,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/MainViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OutlineView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/OutlineView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

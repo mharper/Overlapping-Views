@@ -9,6 +9,9 @@
 #import "WedgeView.h"
 #import "WedgeViewComponent.h"
 
+#define WEDGE_WIDTH 130
+#define WEDGE_HEIGHT 100
+
 @interface WedgeView()
 -(WedgeViewComponent *) viewFromTouches:(NSSet *) touches withEvent:(UIEvent *)event;
 -(void) magnify;
@@ -30,16 +33,23 @@
 
 +(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians
 {
-  WedgeView *newWedge = [[[WedgeView alloc] initWithFrame:CGRectMake(0, 0, 150, 30)] autorelease];
+  WedgeView *newWedge = [[[WedgeView alloc] initWithFrame:CGRectMake(0, 0, WEDGE_WIDTH, WEDGE_HEIGHT)] autorelease];
   newWedge.scoreValue = scoreValue;
   newWedge.rotateAngle = radians;
+  
+  // Move the view so the pointy parts line up again.
+  CGPoint wedgeOffset = CGPointMake(WEDGE_WIDTH * (cos(newWedge.rotateAngle) - 1.0) / 2.0, WEDGE_WIDTH * sin(newWedge.rotateAngle) / 2.0);
+  newWedge.center = CGPointMake(newWedge.center.x + wedgeOffset.x, newWedge.center.y + wedgeOffset.y);
   return newWedge;
 }
 
 
 -(void) setRotateAngle:(CGFloat) angle
 {
+  // This rotates the view by setting a rotation transform.  What I need to do also is to move the view because I really want it to rotate around the point of the wedge.
+  // Transforms rotate around the view's center.
   self->rotateAngle = angle;
+  //self.normalTransform = CGAffineTransformRotate(CGAffineTransformMakeTranslation((self.center.x * cos(angle)) - self.center.x, self.center.y * sin(angle)), angle);
   self.normalTransform = CGAffineTransformMakeRotation(angle);
   self.transform = normalTransform;
 }
@@ -70,14 +80,14 @@
   // Add the various subviews that comprise the entire wedge.
   CGFloat overallWedgeRadius = 130.0;
   CGFloat ringThickness = 9.0;
-  CGFloat wedgeX = 30.0;
+  CGFloat wedgeX = 0.0;
   CGFloat wedgeY = self.bounds.size.height / 2.0;
   
   // Add inner wedge.
   CGFloat innerWedgeRadius = overallWedgeRadius * 3.0 / 5.0;
   WedgeViewComponent *innerWedge = [WedgeViewComponent wedgeWithOuterRadius:innerWedgeRadius radialLength:innerWedgeRadius];
   innerWedge.tag = 501;
-  innerWedge.frame = CGRectMake(wedgeX, wedgeY, innerWedge.frame.size.width, innerWedge.frame.size.height);
+  innerWedge.frame = CGRectMake(wedgeX, wedgeY - innerWedge.frame.size.height / 2.0, innerWedge.frame.size.width, innerWedge.frame.size.height);
   wedgeX += innerWedge.frame.size.width;
   
   // Add triple ring.
@@ -85,14 +95,14 @@
   WedgeViewComponent *tripleRing = [WedgeViewComponent wedgeWithOuterRadius:tripleRingRadius radialLength:ringThickness];
   tripleRing.fillColor = [UIColor greenColor].CGColor;
   tripleRing.tag = 503;
-  tripleRing.frame = CGRectMake(wedgeX, wedgeY - (tripleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, tripleRing.frame.size.width, tripleRing.frame.size.height);
+  tripleRing.frame = CGRectMake(wedgeX, wedgeY - tripleRing.frame.size.height / 2.0, tripleRing.frame.size.width, tripleRing.frame.size.height);
   wedgeX += tripleRing.frame.size.width;
   
   // Add outer wedge.
   CGFloat outerWedgeRadius = overallWedgeRadius - ringThickness;
   WedgeViewComponent *outerWedge = [WedgeViewComponent wedgeWithOuterRadius:outerWedgeRadius radialLength:outerWedgeRadius - tripleRingRadius];
   outerWedge.tag = 504;
-  outerWedge.frame = CGRectMake(wedgeX, wedgeY - (outerWedge.frame.size.height - innerWedge.frame.size.height) / 2.0, outerWedge.frame.size.width, outerWedge.frame.size.height);
+  outerWedge.frame = CGRectMake(wedgeX, wedgeY - outerWedge.frame.size.height / 2.0, outerWedge.frame.size.width, outerWedge.frame.size.height);
   wedgeX += outerWedge.frame.size.width;
   
   // Add double ring.
@@ -100,7 +110,7 @@
   WedgeViewComponent *doubleRing = [WedgeViewComponent wedgeWithOuterRadius:doubleRingRadius radialLength:ringThickness];
   doubleRing.fillColor = [UIColor greenColor].CGColor;
   doubleRing.tag = 502;
-  doubleRing.frame = CGRectMake(wedgeX, wedgeY - (doubleRing.frame.size.height - innerWedge.frame.size.height) / 2.0, doubleRing.frame.size.width, doubleRing.frame.size.height);
+  doubleRing.frame = CGRectMake(wedgeX, wedgeY - doubleRing.frame.size.height / 2.0, doubleRing.frame.size.width, doubleRing.frame.size.height);
   
   // Add the subviews in the desired priority, e. g. double/triple rings "on top."
   [self addSubview:innerWedge];
@@ -230,6 +240,23 @@
 //  [self bringSubviewToFront:selectionScoreView];
 //  selectionScoreView.hidden = NO;
 }
+
+/*
+- (void)drawRect:(CGRect)rect {
+  // Outline the current view.
+  
+  // Save the current context.
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSaveGState(context);
+  
+  // Draw the outline.
+  CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
+  CGContextStrokeRect(context, self.bounds);
+  
+  // Restore the context.
+  CGContextRestoreGState(context);
+}
+*/
 
 - (void)dealloc {
     [super dealloc];
