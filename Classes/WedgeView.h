@@ -23,7 +23,7 @@
 -(void) hideSelectionScoreView;
 -(void) moveSelectionScoreViewNear:(NSSet *) touches withEvent:(UIEvent *) event;
 
-+(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians;
++(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians boardCenter:(CGPoint) centerPoint;
 
 @property(nonatomic) NSInteger scoreValue; 
 @property(nonatomic) CGFloat rotateAngle;

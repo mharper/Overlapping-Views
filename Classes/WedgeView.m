@@ -31,13 +31,13 @@
 @synthesize magnifyBounceTransform;
 @synthesize selectionScoreView;
 
-+(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians
++(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians boardCenter:(CGPoint) centerPoint
 {
-  WedgeView *newWedge = [[[WedgeView alloc] initWithFrame:CGRectMake(0, 0, WEDGE_WIDTH, WEDGE_HEIGHT)] autorelease];
+  WedgeView *newWedge = [[[WedgeView alloc] initWithFrame:CGRectMake(centerPoint.x, centerPoint.y - (WEDGE_HEIGHT / 2.0), WEDGE_WIDTH, WEDGE_HEIGHT)] autorelease];
   newWedge.scoreValue = scoreValue;
   newWedge.rotateAngle = radians;
   
-  // Move the view so the pointy parts line up again.
+  // Move the view so the pointy part lines up again.
   CGPoint wedgeOffset = CGPointMake(WEDGE_WIDTH * (cos(newWedge.rotateAngle) - 1.0) / 2.0, WEDGE_WIDTH * sin(newWedge.rotateAngle) / 2.0);
   newWedge.center = CGPointMake(newWedge.center.x + wedgeOffset.x, newWedge.center.y + wedgeOffset.y);
   return newWedge;
