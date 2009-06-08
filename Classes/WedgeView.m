@@ -46,11 +46,12 @@
 
 -(void) setRotateAngle:(CGFloat) angle
 {
-  // This rotates the view by setting a rotation transform.  What I need to do also is to move the view because I really want it to rotate around the point of the wedge.
-  // Transforms rotate around the view's center.
+  // This rotates the view by setting a rotation transform.
   self->rotateAngle = angle;
-  //self.normalTransform = CGAffineTransformRotate(CGAffineTransformMakeTranslation((self.center.x * cos(angle)) - self.center.x, self.center.y * sin(angle)), angle);
   self.normalTransform = CGAffineTransformMakeRotation(angle);
+  self.magnifyTransform = CGAffineTransformRotate(CGAffineTransformMakeScale(2.0, 2.0), angle);
+  self.magnifyBounceTransform = CGAffineTransformRotate(CGAffineTransformMakeScale(2.5, 2.5), angle);
+  
   self.transform = normalTransform;
 }
 
@@ -72,11 +73,7 @@
 }
 
 -(void) addWedgeSubviews
-{
-  normalTransform = self.transform;
-  magnifyTransform = CGAffineTransformMakeScale(2.0, 2.0);
-  magnifyBounceTransform = CGAffineTransformMakeScale(2.5, 2.5);
-  
+{  
   // Add the various subviews that comprise the entire wedge.
   CGFloat overallWedgeRadius = 130.0;
   CGFloat ringThickness = 9.0;
@@ -131,6 +128,7 @@
 -(void) touchesBegan:(NSSet *) touches withEvent:(UIEvent *) event
 {
   NSLog(@"touchesBegan in WedgeView\n");
+  [[self superview] bringSubviewToFront:self];
   [self magnify];
   WedgeViewComponent *touchedView = [self viewFromTouches:touches withEvent:event];
   if (touchedView != nil)
