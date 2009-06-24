@@ -18,6 +18,9 @@
   CGAffineTransform magnifyTransform;
   CGAffineTransform magnifyBounceTransform;
   IBOutlet UILabel *selectionScoreView;
+  BOOL magnified;
+  CGRect normalFrame;
+  CGRect magnifiedFrame;
 }
 
 -(void) hideSelectionScoreView;
@@ -25,6 +28,9 @@
 
 +(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians boardCenter:(CGPoint) centerPoint;
 
+@property(nonatomic) BOOL magnified;
+@property(nonatomic) CGRect normalFrame;
+@property(nonatomic) CGRect magnifiedFrame;
 @property(nonatomic) NSInteger scoreValue; 
 @property(nonatomic) CGFloat rotateAngle;
 @property(nonatomic, retain) WedgeViewComponent* selectedComponentView;

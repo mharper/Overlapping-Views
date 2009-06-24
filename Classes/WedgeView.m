@@ -18,6 +18,7 @@
 -(void) unmagnify;
 - (void)growAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
 -(void) addWedgeSubviews;
+-(void) initWedge;
 
 @end
 
@@ -30,6 +31,9 @@
 @synthesize magnifyTransform;
 @synthesize magnifyBounceTransform;
 @synthesize selectionScoreView;
+@synthesize magnified;
+@synthesize normalFrame;
+@synthesize magnifiedFrame;
 
 +(WedgeView *) wedgeWithValue:(NSInteger) scoreValue angle:(CGFloat) radians boardCenter:(CGPoint) centerPoint
 {
@@ -40,6 +44,13 @@
   // Move the view so the pointy part lines up again.
   CGPoint wedgeOffset = CGPointMake(WEDGE_WIDTH * (cos(newWedge.rotateAngle) - 1.0) / 2.0, WEDGE_WIDTH * sin(newWedge.rotateAngle) / 2.0);
   newWedge.center = CGPointMake(newWedge.center.x + wedgeOffset.x, newWedge.center.y + wedgeOffset.y);
+  
+  // Hang onto the normal frame and create a magnified frame.
+  CGRect frame = newWedge.frame;
+  newWedge.normalFrame = newWedge.frame;
+  newWedge.magnifiedFrame = CGRectMake(frame.origin.x - 25, frame.origin.y - 25, frame.size.width + 50, frame.size.height + 50);
+  newWedge.magnified = NO;
+  
   return newWedge;
 }
 
@@ -57,7 +68,7 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-      [self addWedgeSubviews];
+      [self initWedge];
     }
     return self;
 }
@@ -65,11 +76,16 @@
 - (id)initWithCoder:(NSCoder *)coder {
 	if (self = [super initWithCoder:coder])
   {
-    self.selectedComponentView = nil;
-    
-    [self addWedgeSubviews];
+    [self initWedge];
 	}
 	return self;
+}
+
+-(void) initWedge
+{
+  self.selectedComponentView = nil;
+  
+  [self addWedgeSubviews];
 }
 
 -(void) addWedgeSubviews
@@ -202,16 +218,17 @@
 	[UIView setAnimationDuration:0.15];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
-	self.transform = magnifyBounceTransform;
+	// self.transform = magnifyBounceTransform;
 //  self.alpha = 0.75;
+  self.frame = self.magnifiedFrame;
 	[UIView commitAnimations];
-  //self.magnified = YES;
+  self.magnified = YES;
 }
 
 - (void)growAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
-	self.transform = magnifyTransform;	
+	//self.transform = magnifyTransform;	
 	[UIView commitAnimations];
 }
 
@@ -219,10 +236,11 @@
 {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
-	self.transform = normalTransform;	
+	//self.transform = normalTransform;	
   self.alpha = 1.0;
+  self.frame = self.normalFrame;
 	[UIView commitAnimations];
-  //self.magnified = NO;
+  self.magnified = NO;
 }
 
 -(void) hideSelectionScoreView

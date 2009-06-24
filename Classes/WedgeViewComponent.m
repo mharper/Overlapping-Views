@@ -23,6 +23,8 @@
 @synthesize fillColor;
 @synthesize selectedFillColor;
 @synthesize containingWedge;
+@synthesize magnifiedFrame;
+@synthesize unmagnifiedFrame;
 
 static CGFloat WEDGE_COMPONENT_MARGIN = 1.0;
 static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
@@ -56,6 +58,9 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
   newComponent.fillColor = [WedgeViewComponent defaultFillColor];
   newComponent.selectedFillColor = [WedgeViewComponent defaultSelectedFillColor];
   newComponent.backgroundColor = [UIColor clearColor];
+  newComponent.magnifiedFrame = CGRectOffset(newComponent.frame, 5.0, 5.0);
+  newComponent.unmagnifiedFrame = newComponent.frame;
+  newComponent.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   return newComponent;
 }
 
@@ -127,7 +132,8 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 	[UIView setAnimationDuration:0.15];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
-	self.transform = magnifyBounceTransform;
+	// self.transform = magnifyBounceTransform;
+  self.frame = magnifiedFrame;
   self.alpha = 0.75;
 	[UIView commitAnimations];
   self.magnified = YES;
@@ -144,14 +150,45 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
-	self.transform = normalTransform;	
+	// self.transform = normalTransform;
+  self.frame = unmagnifiedFrame;
   self.alpha = 1.0;
 	[UIView commitAnimations];
   self.magnified = NO;
 }
 
--(void) drawRect:(CGRect) rect {
+-(void) drawRect:(CGRect) rect
+{
+  if (magnified)
+  {
+    [self drawMagnified];
+  }
+  else
+  {
+    [self drawNormal];
+  }
+}
+
+-(void) drawNormal
+{
+  // Save the current context.
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSaveGState(context);
   
+  // Draw the component path.
+  CGContextSetStrokeColorWithColor(context, strokeColor);
+  CGContextSetFillColorWithColor(context, selected ? selectedFillColor : fillColor);
+  CGContextAddPath(context, [self componentDrawingPath]);
+  CGContextFillPath(context);
+  CGContextAddPath(context, [self componentDrawingPath]);
+  CGContextStrokePath(context);
+  
+  // Restore the context.
+  CGContextRestoreGState(context);
+}
+
+-(void) drawMagnified
+{
   // Save the current context.
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSaveGState(context);

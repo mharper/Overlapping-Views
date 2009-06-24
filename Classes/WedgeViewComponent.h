@@ -22,6 +22,8 @@
   CGColorRef fillColor;
   CGColorRef selectedFillColor;
   WedgeView *containingWedge;
+  CGRect magnifiedFrame;
+  CGRect unmagnifiedFrame;
 }
 
 @property(nonatomic) BOOL magnified;
@@ -36,6 +38,8 @@
 @property(nonatomic) CGColorRef fillColor;
 @property(nonatomic) CGColorRef selectedFillColor;
 @property(nonatomic, retain) WedgeView *containingWedge;
+@property(nonatomic) CGRect magnifiedFrame;
+@property(nonatomic) CGRect unmagnifiedFrame;
 
 -(BOOL) shouldTrackTouches:(NSSet *) touches withEvent:(UIEvent *) event;
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event;
@@ -43,6 +47,8 @@
 -(void) magnify;
 -(void) unmagnify;
 -(CGPathRef) componentDrawingPath;
+-(void) drawNormal;
+-(void) drawMagnified;
 
 +(WedgeViewComponent *) wedgeWithOuterRadius:(CGFloat) outerRadius radialLength:(CGFloat) radialLength;
 +(CGColorRef) defaultStrokeColor;
