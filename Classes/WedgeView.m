@@ -217,10 +217,15 @@
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
 	[UIView setAnimationDelegate:self];
-	[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
+	//[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
 	// self.transform = magnifyBounceTransform;
 //  self.alpha = 0.75;
-  self.frame = self.magnifiedFrame;
+	self.bounds = CGRectInset(self.bounds, -20.0, -20.0);
+  for (WedgeViewComponent* subview in self.subviews)
+  {
+    subview.magnified = YES;
+  }
+  
 	[UIView commitAnimations];
   self.magnified = YES;
 }
@@ -238,7 +243,14 @@
 	[UIView setAnimationDuration:0.15];
 	//self.transform = normalTransform;	
   self.alpha = 1.0;
-  self.frame = self.normalFrame;
+//  self.frame = self.normalFrame;
+	self.bounds = CGRectInset(self.bounds, 20.0, 20.0);
+
+  for (WedgeViewComponent* subview in self.subviews)
+  {
+    subview.magnified = NO;
+  }
+  
 	[UIView commitAnimations];
   self.magnified = NO;
 }
@@ -257,7 +269,6 @@
 //  selectionScoreView.hidden = NO;
 }
 
-/*
 - (void)drawRect:(CGRect)rect {
   // Outline the current view.
   
@@ -272,7 +283,7 @@
   // Restore the context.
   CGContextRestoreGState(context);
 }
-*/
+
 
 - (void)dealloc {
     [super dealloc];

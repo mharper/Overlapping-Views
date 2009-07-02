@@ -5,7 +5,9 @@
 //  Created by Michael Harper on 5/25/09.
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
-
+//
+//  The problem resizing the wedges is happening on the way up to "magnified" and then back down to "unmagnified."
+//  Interestingly, the 11 wedge (at 9 o'clock) seems immune, ostensibly because it is parallel to the horizontal axis.
 #import "WedgeViewComponent.h"
 #import "WedgeView.h"
 
@@ -58,9 +60,22 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
   newComponent.fillColor = [WedgeViewComponent defaultFillColor];
   newComponent.selectedFillColor = [WedgeViewComponent defaultSelectedFillColor];
   newComponent.backgroundColor = [UIColor clearColor];
-  newComponent.magnifiedFrame = CGRectOffset(newComponent.frame, 5.0, 5.0);
+  CGRect frame = newComponent.frame;
+  newComponent.magnifiedFrame = CGRectMake(frame.origin.x - 5, frame.origin.y - 5, frame.size.width + 10, frame.size.height + 10);
   newComponent.unmagnifiedFrame = newComponent.frame;
-  newComponent.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  // This sure didn't work.
+//  newComponent.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  // This is at least keeping the wedge size the same.
+//  newComponent.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+//                                  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+  // This looks promising.
+  newComponent.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+                                  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
+                                  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+  // Calls drawRect: whenever the bounds change.
+  newComponent.contentMode = UIViewContentModeRedraw;
+
   return newComponent;
 }
 
@@ -133,7 +148,7 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
 	// self.transform = magnifyBounceTransform;
-  self.frame = magnifiedFrame;
+  //self.frame = magnifiedFrame;
   self.alpha = 0.75;
 	[UIView commitAnimations];
   self.magnified = YES;
@@ -142,7 +157,7 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 - (void)growAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
-	self.transform = magnifyTransform;	
+	//self.transform = magnifyTransform;	
 	[UIView commitAnimations];
 }
 
@@ -159,14 +174,22 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 
 -(void) drawRect:(CGRect) rect
 {
-  if (magnified)
+  if (! magnified)
   {
-    [self drawMagnified];
-  }
-  else
-  {
+    CGRect frame = self.frame;
+    self.magnifiedFrame = CGRectMake(frame.origin.x - 5, frame.origin.y - 5, frame.size.width + 10, frame.size.height + 10);
+    self.unmagnifiedFrame = frame;
+    
     [self drawNormal];
   }
+  
+  // Just outline yerself.
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
+  CGContextSetLineWidth(context, 5.0);
+  CGContextStrokeRect(context, rect);
+  CGContextRestoreGState(context);
+  
 }
 
 -(void) drawNormal
