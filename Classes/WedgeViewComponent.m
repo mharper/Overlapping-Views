@@ -69,12 +69,12 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 //  newComponent.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
 //                                  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
   // This looks promising.
-  newComponent.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
-                                  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
-                                  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//  newComponent.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+//                                  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
+//                                  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
   // Calls drawRect: whenever the bounds change.
-  newComponent.contentMode = UIViewContentModeRedraw;
+//  newComponent.contentMode = UIViewContentModeRedraw;
 
   return newComponent;
 }
@@ -86,6 +86,13 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
       normalTransform = self.transform;
       magnifyTransform = CGAffineTransformMakeScale(1.5, 1.5);
       magnifyBounceTransform = CGAffineTransformMakeScale(2.0, 2.0);
+      self.autoresizingMask =  
+        UIViewAutoresizingFlexibleLeftMargin   |
+        UIViewAutoresizingFlexibleWidth        |
+        UIViewAutoresizingFlexibleRightMargin  |
+        UIViewAutoresizingFlexibleTopMargin    |
+        UIViewAutoresizingFlexibleHeight       |
+        UIViewAutoresizingFlexibleBottomMargin ;
     }
     return self;
 }
@@ -105,33 +112,33 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 -(BOOL) shouldTrackTouches:(NSSet *) touches withEvent:(UIEvent *) event
 {
   // Should only track touches if the point is inside the drawing area.
-  return YES;
+  //return YES;
 }
 
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event
 {
-  if (! selected)
-  {
-    selected = YES;
-    [self setNeedsDisplay];
-    if (!magnified)
-    {
-      //[self.superview bringSubviewToFront:self];
-      [self magnify];
-    }
-  }
-  [containingWedge moveSelectionScoreViewNear:touches withEvent:event];
+//  if (! selected)
+//  {
+//    selected = YES;
+//    [self setNeedsDisplay];
+//    if (!magnified)
+//    {
+//      //[self.superview bringSubviewToFront:self];
+//      [self magnify];
+//    }
+//  }
+//  [containingWedge moveSelectionScoreViewNear:touches withEvent:event];
 }
 
 -(void) stopTrackingTouches
 {
-  selected = NO;
-  [self setNeedsDisplay];
-  if (magnified)
-  {
-    [self unmagnify];
-    [containingWedge hideSelectionScoreView];
-  }
+//  selected = NO;
+//  [self setNeedsDisplay];
+//  if (magnified)
+//  {
+//    [self unmagnify];
+//    [containingWedge hideSelectionScoreView];
+//  }
 }
 
 -(BOOL) touchInDrawingArea:(NSSet *) touches withEvent:(UIEvent *)event
@@ -150,6 +157,7 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 	// self.transform = magnifyBounceTransform;
   //self.frame = magnifiedFrame;
   self.alpha = 0.75;
+  self.bounds = CGRectInset(self.bounds, -20.0, -20.0);
 	[UIView commitAnimations];
   self.magnified = YES;
 }
@@ -166,7 +174,9 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
 	// self.transform = normalTransform;
-  self.frame = unmagnifiedFrame;
+//  self.frame = unmagnifiedFrame;
+  self.bounds = CGRectInset(self.bounds, 20.0, 20.0);
+
   self.alpha = 1.0;
 	[UIView commitAnimations];
   self.magnified = NO;
@@ -174,20 +184,22 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 
 -(void) drawRect:(CGRect) rect
 {
-  if (! magnified)
-  {
-    CGRect frame = self.frame;
-    self.magnifiedFrame = CGRectMake(frame.origin.x - 5, frame.origin.y - 5, frame.size.width + 10, frame.size.height + 10);
-    self.unmagnifiedFrame = frame;
-    
-    [self drawNormal];
-  }
-  
-  // Just outline yerself.
   CGContextRef context = UIGraphicsGetCurrentContext();
-  CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
-  CGContextSetLineWidth(context, 5.0);
+  CGContextSaveGState(context);
+
+  // Draw the component path.
+  CGContextSetStrokeColorWithColor(context, strokeColor);
+  CGContextSetFillColorWithColor(context, selected ? selectedFillColor : fillColor);
+  CGContextAddPath(context, [self componentDrawingPath]);
+  CGContextFillPath(context);
+  CGContextAddPath(context, [self componentDrawingPath]);
+  CGContextStrokePath(context);
+  
+  // Outline yerself.
+  CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+  CGContextSetLineWidth(context, 1.0);
   CGContextStrokeRect(context, rect);
+  
   CGContextRestoreGState(context);
   
 }

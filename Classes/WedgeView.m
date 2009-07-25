@@ -84,6 +84,9 @@
 -(void) initWedge
 {
   self.selectedComponentView = nil;
+  self.autoresizesSubviews = YES;
+  self.autoresizingMask = UIViewAutoresizingNone;
+  self.backgroundColor = [UIColor clearColor];
   
   [self addWedgeSubviews];
 }
@@ -91,7 +94,7 @@
 -(void) addWedgeSubviews
 {  
   // Add the various subviews that comprise the entire wedge.
-  CGFloat overallWedgeRadius = 130.0;
+  CGFloat overallWedgeRadius = WEDGE_WIDTH;
   CGFloat ringThickness = 9.0;
   CGFloat wedgeX = 0.0;
   CGFloat wedgeY = self.bounds.size.height / 2.0;
@@ -101,6 +104,7 @@
   WedgeViewComponent *innerWedge = [WedgeViewComponent wedgeWithOuterRadius:innerWedgeRadius radialLength:innerWedgeRadius];
   innerWedge.tag = 501;
   innerWedge.frame = CGRectMake(wedgeX, wedgeY - innerWedge.frame.size.height / 2.0, innerWedge.frame.size.width, innerWedge.frame.size.height);
+//  innerWedge.autoresizingMask -= UIViewAutoresizingFlexibleLeftMargin;
   wedgeX += innerWedge.frame.size.width;
   
   // Add triple ring.
@@ -109,6 +113,7 @@
   tripleRing.fillColor = [UIColor greenColor].CGColor;
   tripleRing.tag = 503;
   tripleRing.frame = CGRectMake(wedgeX, wedgeY - tripleRing.frame.size.height / 2.0, tripleRing.frame.size.width, tripleRing.frame.size.height);
+//  tripleRing.autoresizingMask -= UIViewAutoresizingFlexibleLeftMargin + UIViewAutoresizingFlexibleRightMargin;
   wedgeX += tripleRing.frame.size.width;
   
   // Add outer wedge.
@@ -116,6 +121,7 @@
   WedgeViewComponent *outerWedge = [WedgeViewComponent wedgeWithOuterRadius:outerWedgeRadius radialLength:outerWedgeRadius - tripleRingRadius];
   outerWedge.tag = 504;
   outerWedge.frame = CGRectMake(wedgeX, wedgeY - outerWedge.frame.size.height / 2.0, outerWedge.frame.size.width, outerWedge.frame.size.height);
+//  outerWedge.autoresizingMask -= UIViewAutoresizingFlexibleLeftMargin + UIViewAutoresizingFlexibleRightMargin;
   wedgeX += outerWedge.frame.size.width;
   
   // Add double ring.
@@ -124,6 +130,7 @@
   doubleRing.fillColor = [UIColor greenColor].CGColor;
   doubleRing.tag = 502;
   doubleRing.frame = CGRectMake(wedgeX, wedgeY - doubleRing.frame.size.height / 2.0, doubleRing.frame.size.width, doubleRing.frame.size.height);
+//  doubleRing.autoresizingMask -= UIViewAutoresizingFlexibleRightMargin;
   
   // Add the subviews in the desired priority, e. g. double/triple rings "on top."
   [self addSubview:innerWedge];
@@ -220,14 +227,19 @@
 	//[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
 	// self.transform = magnifyBounceTransform;
 //  self.alpha = 0.75;
-	self.bounds = CGRectInset(self.bounds, -20.0, -20.0);
-  for (WedgeViewComponent* subview in self.subviews)
-  {
-    subview.magnified = YES;
-  }
-  
+  CGPoint myCenter = self.center;
+  CGRect newRect = CGRectInset(self.bounds, -20.0, -20.0);
+  newRect.origin.x = newRect.origin.y = 0.0;
+	self.bounds = newRect;
+  self.center = myCenter;
+  [self setNeedsDisplay];
 	[UIView commitAnimations];
   self.magnified = YES;
+  for (WedgeViewComponent* subview in self.subviews)
+  {
+    [subview setNeedsDisplay];
+  }
+  
 }
 
 - (void)growAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
@@ -242,14 +254,19 @@
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
 	//self.transform = normalTransform;	
-  self.alpha = 1.0;
+//  self.alpha = 1.0;
 //  self.frame = self.normalFrame;
-	self.bounds = CGRectInset(self.bounds, 20.0, 20.0);
 
-  for (WedgeViewComponent* subview in self.subviews)
-  {
-    subview.magnified = NO;
-  }
+//  for (WedgeViewComponent* subview in self.subviews)
+//  {
+//    [subview unmagnify];
+//  }
+
+  CGPoint myCenter = self.center;
+  CGRect newRect = CGRectInset(self.bounds, 20.0, 20.0);
+  newRect.origin.x = newRect.origin.y = 0.0;
+	self.bounds = newRect;
+  self.center = myCenter;
   
 	[UIView commitAnimations];
   self.magnified = NO;
@@ -270,7 +287,9 @@
 }
 
 - (void)drawRect:(CGRect)rect {
+  
   // Outline the current view.
+  NSLog(@"WedgeView rect is %@", NSStringFromCGRect(self.bounds));
   
   // Save the current context.
   CGContextRef context = UIGraphicsGetCurrentContext();
@@ -283,6 +302,7 @@
   // Restore the context.
   CGContextRestoreGState(context);
 }
+
 
 
 - (void)dealloc {
