@@ -112,28 +112,28 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 -(BOOL) shouldTrackTouches:(NSSet *) touches withEvent:(UIEvent *) event
 {
   // Should only track touches if the point is inside the drawing area.
-  //return YES;
+  return YES;
 }
 
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event
 {
-//  if (! selected)
-//  {
-//    selected = YES;
-//    [self setNeedsDisplay];
+  if (! selected)
+  {
+    selected = YES;
+    [self setNeedsDisplay];
 //    if (!magnified)
 //    {
 //      //[self.superview bringSubviewToFront:self];
 //      [self magnify];
 //    }
-//  }
-//  [containingWedge moveSelectionScoreViewNear:touches withEvent:event];
+  }
+  [containingWedge moveSelectionScoreViewNear:touches withEvent:event];
 }
 
 -(void) stopTrackingTouches
 {
-//  selected = NO;
-//  [self setNeedsDisplay];
+  selected = NO;
+  [self setNeedsDisplay];
 //  if (magnified)
 //  {
 //    [self unmagnify];
@@ -196,9 +196,9 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
   CGContextStrokePath(context);
   
   // Outline yerself.
-  CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
-  CGContextSetLineWidth(context, 1.0);
-  CGContextStrokeRect(context, rect);
+//  CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+//  CGContextSetLineWidth(context, 1.0);
+//  CGContextStrokeRect(context, rect);
   
   CGContextRestoreGState(context);
   
@@ -242,10 +242,22 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 
 -(CGPathRef) componentDrawingPath
 {
+  // Calculate the effective inner and outer radius based on the size of the frame.
+  self.outerRadius = self.bounds.size.height / (2.0 * sin(WEDGE_ANGLE / 2.0));
+  self.innerRadius = (outerRadius - self.bounds.size.width)/ cos(WEDGE_ANGLE / 2.0);
+  
   CGFloat innerX = innerRadius * cos(WEDGE_ANGLE / 2.0);
   CGFloat outerX = outerRadius * cos(WEDGE_ANGLE / 2.0);
   CGFloat innerY = innerRadius * sin(WEDGE_ANGLE / 2.0);
   CGFloat outerY = outerRadius * sin(WEDGE_ANGLE / 2.0);
+  
+  /*
+   * Original non-scaling values:
+  CGFloat innerX = innerRadius * cos(WEDGE_ANGLE / 2.0);
+  CGFloat outerX = outerRadius * cos(WEDGE_ANGLE / 2.0);
+  CGFloat innerY = innerRadius * sin(WEDGE_ANGLE / 2.0);
+  CGFloat outerY = outerRadius * sin(WEDGE_ANGLE / 2.0);
+  */
   
   CGMutablePathRef drawingPath = CGPathCreateMutable();
   CGAffineTransform offsetHorizontallyAndVertically = CGAffineTransformMakeTranslation(-(innerRadius * cos(WEDGE_ANGLE / 2.0) - WEDGE_COMPONENT_MARGIN), self.bounds.size.height / 2.0);
