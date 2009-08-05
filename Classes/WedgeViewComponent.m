@@ -6,8 +6,6 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 //
-//  The problem resizing the wedges is happening on the way up to "magnified" and then back down to "unmagnified."
-//  Interestingly, the 11 wedge (at 9 o'clock) seems immune, ostensibly because it is parallel to the horizontal axis.
 #import "WedgeViewComponent.h"
 #import "WedgeView.h"
 
@@ -27,6 +25,7 @@
 @synthesize containingWedge;
 @synthesize magnifiedFrame;
 @synthesize unmagnifiedFrame;
+@synthesize wedgeFrame;
 
 static CGFloat WEDGE_COMPONENT_MARGIN = 1.0;
 static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
@@ -49,10 +48,14 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 +(WedgeViewComponent *) wedgeWithOuterRadius:(CGFloat) outerRadius radialLength:(CGFloat) radialLength
 {
   CGFloat innerRadius = outerRadius - radialLength;
-  CGRect wedgeViewRect = CGRectMake(0, 0,
-                                    outerRadius - (innerRadius * cos(WEDGE_ANGLE/ 2.0)) + 2.0 * WEDGE_COMPONENT_MARGIN, 
-                                    2.0 * outerRadius * sin(WEDGE_ANGLE / 2.0) + 2.0 * WEDGE_COMPONENT_MARGIN);
+  // May need simply to offset the wedgeFrame by the margin for everything to work.
+  CGRect wedgeDrawingRect = CGRectMake(WEDGE_COMPONENT_MARGIN, WEDGE_COMPONENT_MARGIN,
+                                    outerRadius - (innerRadius * cos(WEDGE_ANGLE/ 2.0)) /* + 2.0 * WEDGE_COMPONENT_MARGIN */, 
+                                    2.0 * outerRadius * sin(WEDGE_ANGLE / 2.0) /* + 2.0 * WEDGE_COMPONENT_MARGIN */);
+  CGRect wedgeViewRect = CGRectInset(wedgeDrawingRect, -2 * WEDGE_COMPONENT_MARGIN, -2 * WEDGE_COMPONENT_MARGIN);
+  
   WedgeViewComponent *newComponent = [[[WedgeViewComponent alloc] initWithFrame:wedgeViewRect] autorelease];
+  newComponent.wedgeFrame = wedgeDrawingRect;
   newComponent.innerRadius = innerRadius;
   newComponent.outerRadius = outerRadius;
   newComponent.radialLength = radialLength;
@@ -123,7 +126,7 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
     [self setNeedsDisplay];
 //    if (!magnified)
 //    {
-//      //[self.superview bringSubviewToFront:self];
+      //[self.superview bringSubviewToFront:self];
 //      [self magnify];
 //    }
   }
@@ -154,10 +157,11 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 	[UIView setAnimationDuration:0.15];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
-	// self.transform = magnifyBounceTransform;
-  //self.frame = magnifiedFrame;
   self.alpha = 0.75;
-  self.bounds = CGRectInset(self.bounds, -20.0, -20.0);
+  CGPoint inset = CGPointMake(-0.5 * self.bounds.size.width, -0.5 * self.bounds.size.height);
+  self.bounds = CGRectInset(self.bounds, inset.x, inset.y);
+  self.center = CGPointMake(self.center.x + inset.x / 2.0, self.center.y + inset.y / 2.0);
+
 	[UIView commitAnimations];
   self.magnified = YES;
 }
@@ -165,7 +169,6 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 - (void)growAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
-	//self.transform = magnifyTransform;	
 	[UIView commitAnimations];
 }
 
@@ -173,10 +176,9 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.15];
-	// self.transform = normalTransform;
-//  self.frame = unmagnifiedFrame;
-  self.bounds = CGRectInset(self.bounds, 20.0, 20.0);
-
+  CGPoint inset = CGPointMake((1.0 / 3.0) * self.bounds.size.width, (1.0 / 3.0) * self.bounds.size.height);
+  self.bounds = CGRectInset(self.bounds, inset.x, inset.y);
+  self.center = CGPointMake(self.center.x + inset.x / 2.0, self.center.y + inset.y / 2.0);
   self.alpha = 1.0;
 	[UIView commitAnimations];
   self.magnified = NO;
@@ -184,6 +186,8 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 
 -(void) drawRect:(CGRect) rect
 {
+  
+  NSLog(@"Subview bounds is now %@", NSStringFromCGRect(self.bounds));
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSaveGState(context);
 
@@ -242,14 +246,18 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 
 -(CGPathRef) componentDrawingPath
 {
+//  CGRect componentDrawRect = CGRectInset(self.bounds, 2.0 * WEDGE_COMPONENT_MARGIN, 2.0 * WEDGE_COMPONENT_MARGIN);
+  CGRect componentDrawRect = self.wedgeFrame;
+  
   // Calculate the effective inner and outer radius based on the size of the frame.
-  self.outerRadius = self.bounds.size.height / (2.0 * sin(WEDGE_ANGLE / 2.0));
-  self.innerRadius = (outerRadius - self.bounds.size.width)/ cos(WEDGE_ANGLE / 2.0);
+  self.outerRadius = componentDrawRect.size.height / (2.0 * sin(WEDGE_ANGLE / 2.0));
+  self.innerRadius = (outerRadius - componentDrawRect.size.width)/ cos(WEDGE_ANGLE / 2.0);
   
   CGFloat innerX = innerRadius * cos(WEDGE_ANGLE / 2.0);
   CGFloat outerX = outerRadius * cos(WEDGE_ANGLE / 2.0);
   CGFloat innerY = innerRadius * sin(WEDGE_ANGLE / 2.0);
   CGFloat outerY = outerRadius * sin(WEDGE_ANGLE / 2.0);
+  NSLog(@"Component drawing path: Xi = %f, Yi = %f, Xo = %f, Yo = %f\n", innerX, innerY, outerX, outerY);
   
   /*
    * Original non-scaling values:
@@ -260,12 +268,16 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
   */
   
   CGMutablePathRef drawingPath = CGPathCreateMutable();
-  CGAffineTransform offsetHorizontallyAndVertically = CGAffineTransformMakeTranslation(-(innerRadius * cos(WEDGE_ANGLE / 2.0) - WEDGE_COMPONENT_MARGIN), self.bounds.size.height / 2.0);
+  CGAffineTransform offsetToCenter = CGAffineTransformMakeTranslation(-innerRadius * cos(WEDGE_ANGLE / 2.0), componentDrawRect.size.height / 2.0);
+  CGAffineTransform offsetHorizontallyAndVertically = CGAffineTransformTranslate(offsetToCenter, componentDrawRect.origin.x, componentDrawRect.origin.y);
+  // Need to transform again to get the origin correct for the margin.
   
   CGPathMoveToPoint(drawingPath, &offsetHorizontallyAndVertically, outerX, -outerY);
-  CGPathAddArcToPoint(drawingPath, &offsetHorizontallyAndVertically, outerRadius / cos(WEDGE_ANGLE / 2.0), 0.0, outerX, outerY, outerRadius);
+//  CGPathAddArcToPoint(drawingPath, &offsetHorizontallyAndVertically, outerRadius / cos(WEDGE_ANGLE / 2.0), 0.0, outerX, outerY, outerRadius);
+  CGPathAddArc(drawingPath, &offsetHorizontallyAndVertically, 0.0, 0.0, outerRadius, -(WEDGE_ANGLE / 2.0), WEDGE_ANGLE / 2.0, false);
   CGPathAddLineToPoint(drawingPath, &offsetHorizontallyAndVertically, innerX, innerY);
-  CGPathAddArcToPoint(drawingPath, &offsetHorizontallyAndVertically, innerRadius / cos(WEDGE_ANGLE / 2.0), 0.0, innerX, -innerY, innerRadius);
+//  CGPathAddArcToPoint(drawingPath, &offsetHorizontallyAndVertically, innerRadius / cos(WEDGE_ANGLE / 2.0), 0.0, innerX, -innerY, innerRadius);
+  CGPathAddArc(drawingPath, &offsetHorizontallyAndVertically, 0.0, 0.0, innerRadius, WEDGE_ANGLE / 2.0, -(WEDGE_ANGLE / 2.0), true);
   CGPathAddLineToPoint(drawingPath, &offsetHorizontallyAndVertically, outerX, -outerY);
   
   return drawingPath;

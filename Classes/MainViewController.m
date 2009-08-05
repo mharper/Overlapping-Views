@@ -7,6 +7,7 @@
 //
 
 #import "MainViewController.h"
+#import "WedgeViewComponent.h"
 
 @implementation MainViewController
 
@@ -40,6 +41,9 @@
     NSLog(@"Added wedge %d at (%f, %f, %f, %f)\n", w, newWedge.frame.origin.x, newWedge.frame.origin.y, newWedge.frame.size.width, newWedge.frame.size.height);
   }
   
+  // Create one more wedge component view, just for fun.
+  WedgeViewComponent *funView = [WedgeViewComponent wedgeWithOuterRadius:100.0 radialLength:20.0];
+  [self.view addSubview:funView];
   [super viewDidLoad];
 
 }

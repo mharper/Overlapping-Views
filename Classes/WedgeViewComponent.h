@@ -24,6 +24,7 @@
   WedgeView *containingWedge;
   CGRect magnifiedFrame;
   CGRect unmagnifiedFrame;
+  CGRect wedgeFrame;
 }
 
 @property(nonatomic) BOOL magnified;
@@ -40,6 +41,7 @@
 @property(nonatomic, retain) WedgeView *containingWedge;
 @property(nonatomic) CGRect magnifiedFrame;
 @property(nonatomic) CGRect unmagnifiedFrame;
+@property(nonatomic) CGRect wedgeFrame;
 
 -(BOOL) shouldTrackTouches:(NSSet *) touches withEvent:(UIEvent *) event;
 -(void) trackTouches:(NSSet *) touches withEvent:(UIEvent *) event;

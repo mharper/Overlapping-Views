@@ -99,6 +99,7 @@
   CGFloat wedgeX = 0.0;
   CGFloat wedgeY = self.bounds.size.height / 2.0;
   
+  // 130 * 3 = 390 / 5 = 78
   // Add inner wedge.
   CGFloat innerWedgeRadius = overallWedgeRadius * 3.0 / 5.0;
   WedgeViewComponent *innerWedge = [WedgeViewComponent wedgeWithOuterRadius:innerWedgeRadius radialLength:innerWedgeRadius];
@@ -107,6 +108,7 @@
 //  innerWedge.autoresizingMask -= UIViewAutoresizingFlexibleLeftMargin;
   wedgeX += innerWedge.frame.size.width;
   
+  // 78 + 9 = 87
   // Add triple ring.
   CGFloat tripleRingRadius = innerWedgeRadius + ringThickness;
   WedgeViewComponent *tripleRing = [WedgeViewComponent wedgeWithOuterRadius:tripleRingRadius radialLength:ringThickness];
@@ -235,6 +237,8 @@
   [self setNeedsDisplay];
 	[UIView commitAnimations];
   self.magnified = YES;
+  
+  // This should automagically magnify the subviews.
   for (WedgeViewComponent* subview in self.subviews)
   {
     [subview setNeedsDisplay];
