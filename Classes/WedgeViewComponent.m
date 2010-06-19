@@ -77,7 +77,7 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 //                                  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
   // Calls drawRect: whenever the bounds change.
-//  newComponent.contentMode = UIViewContentModeRedraw;
+  newComponent.contentMode = UIViewContentModeRedraw;
 
   return newComponent;
 }
@@ -191,7 +191,7 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 -(void) drawRect:(CGRect) rect
 {
   
-  NSLog(@"Subview bounds is now %@", NSStringFromCGRect(self.bounds));
+  NSLog(@"Subview frame is now %@", NSStringFromCGRect(self.frame));
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSaveGState(context);
 
@@ -250,9 +250,9 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 
 -(CGPathRef) componentDrawingPath
 {
-#error YOUR DRAWNING PROBLEM IS IN HERE, MICHAEL.
-//  CGRect componentDrawRect = CGRectInset(self.bounds, 2.0 * WEDGE_COMPONENT_MARGIN, 2.0 * WEDGE_COMPONENT_MARGIN);
-  CGRect componentDrawRect = self.wedgeFrame;
+//#error YOUR DRAWNING PROBLEM IS IN HERE, MICHAEL.
+  CGRect componentDrawRect = CGRectInset(self.bounds, 2.0 * WEDGE_COMPONENT_MARGIN, 2.0 * WEDGE_COMPONENT_MARGIN);
+//  CGRect componentDrawRect = self.wedgeFrame;
   
   // Calculate the effective inner and outer radius based on the size of the frame.
   self.outerRadius = componentDrawRect.size.height / (2.0 * sin(WEDGE_ANGLE / 2.0));
