@@ -8,6 +8,8 @@
 
 #import "WedgeView.h"
 #import "WedgeViewComponent.h"
+#import <QuartzCore/QuartzCore.h>
+
 
 #define WEDGE_WIDTH 130
 #define WEDGE_HEIGHT 100
@@ -60,16 +62,22 @@
   // This rotates the view by setting a rotation transform.
   self->rotateAngle = angle;
   self.normalTransform = CGAffineTransformMakeRotation(angle);
-  self.magnifyTransform = CGAffineTransformRotate(CGAffineTransformMakeScale(2.0, 2.0), angle);
-  self.magnifyBounceTransform = CGAffineTransformRotate(CGAffineTransformMakeScale(2.5, 2.5), angle);
-  
+//  self.magnifyTransform = CGAffineTransformRotate(CGAffineTransformMakeScale(2.0, 2.0), angle);
+//  self.magnifyBounceTransform = CGAffineTransformRotate(CGAffineTransformMakeScale(2.5, 2.5), angle);
+//  
   self.transform = normalTransform;
+  
+//  CGFloat rotation = [rotatingButton frameCenterRotation];
+//  [rotatingButton setFrameCenterRotation:
+//   rotation + 15.0f];
+  
 }
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
       [self initWedge];
     }
+
     return self;
 }
 
@@ -87,6 +95,10 @@
   self.autoresizesSubviews = YES;
   self.autoresizingMask = UIViewAutoresizingNone;
   self.backgroundColor = [UIColor clearColor];
+  
+  // Add an outline of the view so I know where the fuck it is.
+  self.layer.borderWidth = 2.0;
+  self.layer.borderColor = [UIColor redColor].CGColor;
   
   [self addWedgeSubviews];
 }
@@ -106,7 +118,7 @@
   innerWedge.tag = 501;
   innerWedge.frame = CGRectMake(wedgeX, wedgeY - innerWedge.frame.size.height / 2.0, innerWedge.frame.size.width, innerWedge.frame.size.height);
 //  innerWedge.autoresizingMask -= UIViewAutoresizingFlexibleLeftMargin;
-  wedgeX += innerWedge.frame.size.width;
+  wedgeX += innerWedge.wedgeFrame.size.width;
   
   // 78 + 9 = 87
   // Add triple ring.
@@ -116,7 +128,7 @@
   tripleRing.tag = 503;
   tripleRing.frame = CGRectMake(wedgeX, wedgeY - tripleRing.frame.size.height / 2.0, tripleRing.frame.size.width, tripleRing.frame.size.height);
 //  tripleRing.autoresizingMask -= UIViewAutoresizingFlexibleLeftMargin + UIViewAutoresizingFlexibleRightMargin;
-  wedgeX += tripleRing.frame.size.width;
+  wedgeX += tripleRing.wedgeFrame.size.width;
   
   // Add outer wedge.
   CGFloat outerWedgeRadius = overallWedgeRadius - ringThickness;
@@ -124,7 +136,7 @@
   outerWedge.tag = 504;
   outerWedge.frame = CGRectMake(wedgeX, wedgeY - outerWedge.frame.size.height / 2.0, outerWedge.frame.size.width, outerWedge.frame.size.height);
 //  outerWedge.autoresizingMask -= UIViewAutoresizingFlexibleLeftMargin + UIViewAutoresizingFlexibleRightMargin;
-  wedgeX += outerWedge.frame.size.width;
+  wedgeX += outerWedge.wedgeFrame.size.width;
   
   // Add double ring.
   CGFloat doubleRingRadius = overallWedgeRadius;
@@ -155,6 +167,7 @@
   NSLog(@"touchesBegan in WedgeView\n");
   [[self superview] bringSubviewToFront:self];
   [self magnify];
+  /*
   WedgeViewComponent *touchedView = [self viewFromTouches:touches withEvent:event];
   if (touchedView != nil)
   {
@@ -164,10 +177,12 @@
     }
     self.selectedComponentView = touchedView;
   }
+  */
 }
 
 -(void) touchesMoved:(NSSet *) touches withEvent:(UIEvent *) event
 {
+  /*
   WedgeViewComponent *touchedView = [self viewFromTouches:touches withEvent:event];
   if (touchedView != nil)
   {
@@ -193,25 +208,30 @@
     [selectedComponentView stopTrackingTouches];
     self.selectedComponentView = nil;
   }
+   */
 }
 
 -(void) touchesEnded:(NSSet *) touches withEvent:(UIEvent *) event
 {
   [self unmagnify];
+  /*
   if (selectedComponentView != nil)
   {
     [selectedComponentView stopTrackingTouches];
     self.selectedComponentView = nil;
   }
+   */
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+  /*
   if (selectedComponentView != nil)
   {
     [selectedComponentView stopTrackingTouches];
     self.selectedComponentView = nil;
   }
+   */
 }
 
 -(WedgeViewComponent *) viewFromTouches:(NSSet *) touches withEvent:(UIEvent *)event
@@ -223,27 +243,41 @@
 
 -(void) magnify
 {
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.15];
-	[UIView setAnimationDelegate:self];
-	//[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
-	// self.transform = magnifyBounceTransform;
-//  self.alpha = 0.75;
-  CGPoint myCenter = self.center;
-  CGRect newRect = CGRectInset(self.bounds, -20.0, -20.0);
-  newRect.origin.x = newRect.origin.y = 0.0;
-	self.bounds = newRect;
-  self.center = myCenter;
-  [self setNeedsDisplay];
-	[UIView commitAnimations];
-  self.magnified = YES;
-  
-  // This should automagically magnify the subviews.
-  for (WedgeViewComponent* subview in self.subviews)
+  if (!self.magnified)
   {
-    [subview setNeedsDisplay];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.15];
+    [UIView setAnimationDelegate:self];
+    
+    // Set bounds to 2x.
+    CGRect doubleRect = CGRectInset(self.bounds, -(self.bounds.size.width / 2.0), -(self.bounds.size.height / 2.0));
+    self.bounds = doubleRect;
+    
+    // Any kind of magnification transform makes the edges fuzzy.
+  //  CATransform3D magnifyTranslate = CATransform3DMakeTranslation(0.0, 0.0, 40.0);
+  //  CATransform3D scale = CATransform3DMakeScale(2.0f, 2.0f, 1.0f);
+  //  [self layer].transform = CATransform3DConcat(scale, magnifyTranslate);
+     
+    //[UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:)];
+    // self.transform = magnifyBounceTransform;
+  //  self.alpha = 0.75;
+  //  CGPoint myCenter = self.center;
+  //  CGRect newRect = CGRectInset(self.bounds, -20.0, -20.0);
+  //  newRect.origin.x = newRect.origin.y = 0.0;
+  //	self.bounds = newRect;
+  //  self.center = myCenter;
+  //  [self setNeedsDisplay];
+    [UIView commitAnimations];
+    self.magnified = YES;
+    
+    // This should automagically magnify the subviews.
+    /*
+    for (WedgeViewComponent* subview in self.subviews)
+    {
+      [subview setNeedsDisplay];
+    }
+    */
   }
-  
 }
 
 - (void)growAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
@@ -255,25 +289,34 @@
 
 -(void) unmagnify
 {
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.15];
-	//self.transform = normalTransform;	
-//  self.alpha = 1.0;
-//  self.frame = self.normalFrame;
+  if (self.magnified)
+  {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.15];
+    //self.transform = normalTransform;	
+  //  self.alpha = 1.0;
+  //  self.frame = self.normalFrame;
 
-//  for (WedgeViewComponent* subview in self.subviews)
-//  {
-//    [subview unmagnify];
-//  }
-
-  CGPoint myCenter = self.center;
-  CGRect newRect = CGRectInset(self.bounds, 20.0, 20.0);
-  newRect.origin.x = newRect.origin.y = 0.0;
-	self.bounds = newRect;
-  self.center = myCenter;
-  
-	[UIView commitAnimations];
-  self.magnified = NO;
+  //  for (WedgeViewComponent* subview in self.subviews)
+  //  {
+  //    [subview unmagnify];
+  //  }
+    /*
+    CGPoint myCenter = self.center;
+    CGRect newRect = CGRectInset(self.bounds, 20.0, 20.0);
+    newRect.origin.x = newRect.origin.y = 0.0;
+    self.bounds = newRect;
+    self.center = myCenter;
+    */
+    
+    // Set bounds to 0.5x.
+    CGRect halfRect = CGRectInset(self.bounds, (self.bounds.size.width/4.0), (self.bounds.size.height/4.0));
+    self.bounds = halfRect;
+    
+    [UIView commitAnimations];
+    self.magnified = NO;
+    
+  }
 }
 
 -(void) hideSelectionScoreView
@@ -291,7 +334,7 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-  
+  /*
   // Outline the current view.
   NSLog(@"WedgeView rect is %@", NSStringFromCGRect(self.bounds));
   
@@ -300,11 +343,12 @@
   CGContextSaveGState(context);
   
   // Draw the outline.
-  CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
-  CGContextStrokeRect(context, self.bounds);
+//  CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
+//  CGContextStrokeRect(context, self.bounds);
   
   // Restore the context.
   CGContextRestoreGState(context);
+   */
 }
 
 

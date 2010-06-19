@@ -34,12 +34,14 @@
   
   // Load the wedges.
   static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
+  /*
   for (int w = 0; w < 20; w++)
   {
     WedgeView *newWedge = [WedgeView wedgeWithValue:w angle:w * WEDGE_ANGLE boardCenter:myCenter];
     [self.view addSubview:newWedge];
     NSLog(@"Added wedge %d at (%f, %f, %f, %f)\n", w, newWedge.frame.origin.x, newWedge.frame.origin.y, newWedge.frame.size.width, newWedge.frame.size.height);
   }
+  */
   
   // Create one more wedge component view, just for fun.
   WedgeViewComponent *funView = [WedgeViewComponent wedgeWithOuterRadius:100.0 radialLength:20.0];

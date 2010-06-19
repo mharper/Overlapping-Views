@@ -89,6 +89,9 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
       normalTransform = self.transform;
       magnifyTransform = CGAffineTransformMakeScale(1.5, 1.5);
       magnifyBounceTransform = CGAffineTransformMakeScale(2.0, 2.0);
+      self.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+      /*
       self.autoresizingMask =  
         UIViewAutoresizingFlexibleLeftMargin   |
         UIViewAutoresizingFlexibleWidth        |
@@ -96,6 +99,7 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
         UIViewAutoresizingFlexibleTopMargin    |
         UIViewAutoresizingFlexibleHeight       |
         UIViewAutoresizingFlexibleBottomMargin ;
+      */
     }
     return self;
 }
@@ -246,6 +250,7 @@ static CGFloat WEDGE_ANGLE = 2.0 * M_PI / 20.0;
 
 -(CGPathRef) componentDrawingPath
 {
+#error YOUR DRAWNING PROBLEM IS IN HERE, MICHAEL.
 //  CGRect componentDrawRect = CGRectInset(self.bounds, 2.0 * WEDGE_COMPONENT_MARGIN, 2.0 * WEDGE_COMPONENT_MARGIN);
   CGRect componentDrawRect = self.wedgeFrame;
   
